@@ -195,6 +195,14 @@ cd
 source .bashrc
 
 
+cd ~/src/Firmware
+
+git checkout hippocampus
+
+cd ~/src/Firmware/Tools/sitl_gazebo/
+git checkout hippocampus
+
+sudo apt-get install libgstreamer1.0-dev
 # Go to the firmware directory
 clone_dir=~/src
 cd $clone_dir/Firmware
