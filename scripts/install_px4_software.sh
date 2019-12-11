@@ -175,8 +175,30 @@ else echo "$catkin_ws_source" >> ~/.bashrc; fi
 eval $catkin_ws_source
 
 
+cd ~/src/Firmware/Tools
+
+git clone https://github.com/Zarbokk/sitl_gazebo.git
+
+
+cd ~/catkin_ws/src
+
+git clone https://github.com/AprilRobotics/apriltag_ros.git
+
+git clone https://github.com/AprilRobotics/apriltag.git
+
+git clone https://github.com/NBauschmann/localisation.git
+
+git clone https://github.com/Zarbokk/utilities_localisation.git
+cd ..
+catkin build
+cd
+source .bashrc
+
+
 # Go to the firmware directory
 clone_dir=~/src
 cd $clone_dir/Firmware
+
+
 
 
