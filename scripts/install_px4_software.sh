@@ -1,230 +1,83 @@
-#! /usr/bin/env bash
-#first script
+#!/bin/bash
 
-## Bash script to setup PX4 development environment on Ubuntu LTS (18.04, 16.04).
-## Can also be used in docker.
+## Bash script for setting up a PX4 development environment on Ubuntu LTS (16.04).
+## It can be used for installing simulators (only) or for installing the preconditions for Snapdragon Flight or Raspberry Pi.
 ##
 ## Installs:
-## - Common dependencies and tools for nuttx, jMAVSim, Gazebo
-## - NuttX toolchain (omit with arg: --no-nuttx)
-## - jMAVSim and Gazebo9 simulator (omit with arg: --no-sim-tools)
-##
-## Not Installs:
+## - Common dependencies and tools for all targets (including: Ninja build system, Qt Creator, pyulog)
 ## - FastRTPS and FastCDR
+## - jMAVSim simulator dependencies
+## - PX4/Firmware source (to ~/src/Firmware/)
+sudo usermod -a -G dialout $USER
+
+# Preventing sudo timeout https://serverfault.com/a/833888
+trap "exit" INT TERM; trap "kill 0" EXIT; sudo -v || exit $?; sleep 1; while true; do sleep 60; sudo -nv; done 2>/dev/null &
+
+# Ubuntu Config
+echo "We must first remove modemmanager"
+sudo apt-get remove modemmanager -y
 
 
-INSTALL_NUTTX="true"
-INSTALL_SIM="true"
+# Common dependencies
+echo "Installing common dependencies"
+sudo apt-get update -y
+sudo apt-get install git zip qtcreator cmake build-essential genromfs ninja-build exiftool astyle -y
+# make sure xxd is installed, dedicated xxd package since Ubuntu 18.04 but was squashed into vim-common before
+which xxd || sudo apt install xxd -y || sudo apt-get install vim-common --no-install-recommends -y
+# Required python packages
+sudo apt-get install python-argparse python-empy python-toml python-numpy python-dev python-pip -y
+sudo -H pip install --upgrade pip
+sudo -H pip install pandas jinja2 pyserial pyyaml
+# optional python tools
+sudo -H pip install pyulog
 
-# Parse arguments
-for arg in "$@"
-do
-	if [[ $arg == "--no-nuttx" ]]; then
-		INSTALL_NUTTX="false"
-	fi
-
-	if [[ $arg == "--no-sim-tools" ]]; then
-		INSTALL_SIM="false"
-	fi
-
-done
-
-# detect if running in docker
-if [ -f /.dockerenv ]; then
-	echo "Running within docker, installing initial dependencies";
-	apt-get --quiet -y update && apt-get --quiet -y install \
-		ca-certificates \
-		curl \
-		gnupg \
-		gosu \
-		lsb-core \
-		sudo \
-		wget \
-		;
+# Install FastRTPS 1.7.1 and FastCDR-1.0.8
+fastrtps_dir=$HOME/eProsima_FastRTPS-1.7.1-Linux
+echo "Installing FastRTPS to: $fastrtps_dir"
+if [ -d "$fastrtps_dir" ]
+then
+    echo " FastRTPS already installed."
+else
+    pushd .
+    cd ~
+    wget https://www.eprosima.com/index.php/component/ars/repository/eprosima-fast-rtps/eprosima-fast-rtps-1-7-1/eprosima_fastrtps-1-7-1-linux-tar-gz -O eprosima_fastrtps-1-7-1-linux.tar.gz
+    tar -xzf eprosima_fastrtps-1-7-1-linux.tar.gz eProsima_FastRTPS-1.7.1-Linux/
+    tar -xzf eprosima_fastrtps-1-7-1-linux.tar.gz requiredcomponents
+    tar -xzf requiredcomponents/eProsima_FastCDR-1.0.8-Linux.tar.gz
+    cpucores=$(( $(lscpu | grep Core.*per.*socket | awk -F: '{print $2}') * $(lscpu | grep Socket\(s\) | awk -F: '{print $2}') ))
+    (cd eProsima_FastCDR-1.0.8-Linux && ./configure --libdir=/usr/lib && make -j$cpucores && sudo make install)
+    (cd eProsima_FastRTPS-1.7.1-Linux && ./configure --libdir=/usr/lib && make -j$cpucores && sudo make install)
+    rm -rf requiredcomponents eprosima_fastrtps-1-7-1-linux.tar.gz
+    popd
 fi
 
-# script directory
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+# jMAVSim simulator dependencies
+echo "Installing jMAVSim simulator dependencies"
+sudo apt-get install ant openjdk-8-jdk openjdk-8-jre -y
 
-# check requirements.txt exists (script not run in source tree)
-REQUIREMENTS_FILE="requirements.txt"
-if [[ ! -f "${DIR}/${REQUIREMENTS_FILE}" ]]; then
-	echo "FAILED: ${REQUIREMENTS_FILE} needed in same directory as ubuntu.sh (${DIR})."
-	return 1
+# Clone PX4/Firmware
+clone_dir=~/src
+echo "Cloning PX4 to: $clone_dir."
+if [ -d "$clone_dir" ]
+then
+    echo " Firmware already cloned."
+else
+    mkdir -p $clone_dir
+    cd $clone_dir
+    git clone https://github.com/Zarbokk/Firmware.git
 fi
+# second script
 
 
-# check ubuntu version
-# instructions for 16.04, 18.04
-# otherwise warn and point to docker?
-UBUNTU_RELEASE=`lsb_release -rs`
+#!/bin/bash
 
-if [[ "${UBUNTU_RELEASE}" == "14.04" ]]; then
-	echo "Ubuntu 14.04 unsupported, see docker px4io/px4-dev-base"
-	exit 1
-elif [[ "${UBUNTU_RELEASE}" == "16.04" ]]; then
-	echo "Ubuntu 16.04"
-elif [[ "${UBUNTU_RELEASE}" == "18.04" ]]; then
-	echo "Ubuntu 18.04"
-fi
-
-
-
-export DEBIAN_FRONTEND=noninteractive
-
-echo
-echo "Installing PX4 general dependencies"
-
-sudo apt-get update -yy --quiet
-sudo apt-get -yy --quiet --no-install-recommends install \
-	astyle \
-	build-essential \
-	ccache \
-	clang \
-	clang-tidy \
-	cmake \
-	cppcheck \
-	doxygen \
-	file \
-	g++ \
-	gcc \
-	gdb \
-	git \
-	lcov \
-	make \
-	ninja-build \
-	python3-pip \
-	python3-pygments \
-	python3-setuptools \
-	python-pip \
-	python-dev \
-	rsync \
-	shellcheck \
-	unzip \
-	wget \
-	xsltproc \
-	zip \
-	;
-
-
-if [[ "${UBUNTU_RELEASE}" == "16.04" ]]; then
-	echo "Installing Ubuntu 16.04 PX4-compatible ccache version"
-	wget -O /tmp/ccache_3.4.1-1_amd64.deb http://launchpadlibrarian.net/356662933/ccache_3.4.1-1_amd64.deb
-	sudo dpkg -i /tmp/ccache_3.4.1-1_amd64.deb
-fi
-
-# Python3 dependencies
-echo
-echo "Installing PX4 Python3 dependencies"
-sudo python3 -m pip install --upgrade pip setuptools wheel
-sudo python3 -m pip install -r ${DIR}/requirements.txt
-
-
-# Python2 dependencies
-echo
-echo "Installing PX4 Python2 dependencies"
-sudo python2 -m pip install --upgrade pip setuptools wheel
-sudo python2 -m pip install -r ${DIR}/requirements.txt
-
-
-# NuttX toolchain (arm-none-eabi-gcc)
-if [[ $INSTALL_NUTTX == "true" ]]; then
-
-	echo
-	echo "Installing NuttX dependencies"
-
-	sudo apt-get -yy --quiet --no-install-recommends install \
-		autoconf \
-		automake \
-		bison \
-		bzip2 \
-		flex \
-		gdb-multiarch \
-		gperf \
-		libncurses-dev \
-		libtool \
-		pkg-config \
-		vim-common \
-		;
-
-	# add user to dialout group (serial port access)
-	sudo usermod -a -G dialout $USER
-
-	# Remove modem manager (interferes with PX4 serial port/USB serial usage).
-	sudo apt-get remove modemmanager -y
-
-	# arm-none-eabi-gcc
-	NUTTX_GCC_VERSION="7-2017-q4-major"
-
-	GCC_VER_STR=$(arm-none-eabi-gcc --version)
-	STATUSRETVAL=$(echo $GCC_VER_STR | grep -c "${NUTTX_GCC_VERSION}")
-
-	if [ $STATUSRETVAL -eq "1" ]; then
-		echo "arm-none-eabi-gcc-${NUTTX_GCC_VERSION} found, skipping installation"
-
-	else
-		echo "Installing arm-none-eabi-gcc-${NUTTX_GCC_VERSION}";
-		wget -O /tmp/gcc-arm-none-eabi-${NUTTX_GCC_VERSION}-linux.tar.bz2 https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/7-2017q4/gcc-arm-none-eabi-${NUTTX_GCC_VERSION}-linux.tar.bz2 && \
-			sudo tar -jxf /tmp/gcc-arm-none-eabi-${NUTTX_GCC_VERSION}-linux.tar.bz2 -C /opt/;
-
-		# add arm-none-eabi-gcc to user's PATH
-		exportline="export PATH=/opt/gcc-arm-none-eabi-${NUTTX_GCC_VERSION}/bin:\$PATH"
-
-		if grep -Fxq "$exportline" $HOME/.profile;
-		then
-			echo "${NUTTX_GCC_VERSION} path already set.";
-		else
-			echo $exportline >> $HOME/.profile;
-		fi
-	fi
-
-fi
-
-# Simulation tools
-if [[ $INSTALL_SIM == "true" ]]; then
-
-	echo
-	echo "Installing PX4 simulation dependencies"
-
-	# java (jmavsim or fastrtps)
-	sudo apt-get -yy --quiet --no-install-recommends install \
-		ant \
-		openjdk-8-jre \
-		openjdk-8-jdk \
-		;
-
-	# Gazebo
-	sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
-	wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
-	sudo apt-get update -yy --quiet
-	sudo apt-get -yy --quiet --no-install-recommends install \
-		gazebo9 \
-		gstreamer1.0-plugins-bad \
-		gstreamer1.0-plugins-base \
-		gstreamer1.0-plugins-good \
-		gstreamer1.0-plugins-ugly \
-		libeigen3-dev \
-		libgazebo9-dev \
-		libgstreamer-plugins-base1.0-dev \
-		libimage-exiftool-perl \
-		libopencv-dev \
-		libxml2-utils \
-		pkg-config \
-		protobuf-compiler \
-		;
-
-fi
-
-if [[ $INSTALL_NUTTX == "true" ]]; then
-	echo
-	echo "Reboot or logout, login computer before attempting to build NuttX targets"
-fi
-
-
-
-#second script
-
-
+## Bash script for setting up ROS Melodic (with Gazebo 9) development environment for PX4 on Ubuntu LTS (18.04).
+## It installs the common dependencies for all targets (including Qt Creator)
+##
+## Installs:
+## - Common dependencies libraries and tools as defined in `ubuntu_sim_common_deps.sh`
+## - ROS Melodic (including Gazebo9)
+## - MAVROS
 
 if [[ $(lsb_release -sc) == *"xenial"* ]]; then
   echo "OS version detected as $(lsb_release -sc) (16.04)."
@@ -322,15 +175,8 @@ else echo "$catkin_ws_source" >> ~/.bashrc; fi
 eval $catkin_ws_source
 
 
-
-
-
-
-
-
-
-
-
-
+# Go to the firmware directory
+clone_dir=~/src
+cd $clone_dir/Firmware
 
 
