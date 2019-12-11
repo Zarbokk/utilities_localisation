@@ -4,7 +4,8 @@ to start simulatiuon:
 
 DONT_RUN=1 make px4_sitl_default gazebo_uuv2
 
-u und bestaetigen
+y und bestaetigen
+manchmal auch u und bestaetigen einfach ausprobieren...
 
 source ~/catkin_ws/devel/setup.bash    # (optional)
 

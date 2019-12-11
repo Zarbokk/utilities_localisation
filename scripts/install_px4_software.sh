@@ -201,6 +201,7 @@ git checkout hippocampus
 
 cd ~/src/Firmware/Tools/sitl_gazebo/
 git checkout hippocampus
+git pull
 
 sudo apt-get install libgstreamer1.0-dev
 # Go to the firmware directory
