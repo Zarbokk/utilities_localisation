@@ -192,7 +192,13 @@ git clone https://github.com/Zarbokk/utilities_localisation.git
 cd ..
 catkin build
 cd
+sudo apt install terminator -y
+
+echo "PS1='\[\033[1;36m\]\u\[\033[1;31m\]@\[\033[1;32m\]\h:\[\033[1;35m\]\w\[\033[1;31m\]\$\[\033[0m\] '">> ~/.bashrc
+
 source .bashrc
+
+
 
 
 cd ~/src/Firmware
@@ -203,7 +209,7 @@ cd ~/src/Firmware/Tools/sitl_gazebo/
 git checkout hippocampus
 git pull
 
-sudo apt-get install libgstreamer1.0-dev
+sudo apt install libgstreamer1.0-dev
 # Go to the firmware directory
 clone_dir=~/src
 cd $clone_dir/Firmware
