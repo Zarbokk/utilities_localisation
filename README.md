@@ -1,11 +1,24 @@
 # utilities_localisation
 
-to start simulatiuon:
+First Run Simulation:
 
 DONT_RUN=1 make px4_sitl_default gazebo_uuv2
 
-y und bestaetigen
-manchmal auch u und bestaetigen einfach ausprobieren...
+u und bestaetigen
+dannach build ordner loeschen und folgende Befehle:
+
+cd src/Firmware/Tools/sitl_gazebo/
+
+git checkout hippocampus
+
+git pull
+
+cd ../..
+
+
+
+
+DONT_RUN=1 make px4_sitl_default gazebo_uuv2
 
 source ~/catkin_ws/devel/setup.bash    # (optional)
 
