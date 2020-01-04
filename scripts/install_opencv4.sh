@@ -28,3 +28,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D PYTHON_EXECUTABLE=/usr/bin/python \
 	-D BUILD_EXAMPLES=ON ..
 make -j4
+
+
+sudo make install
+sudo ldconfig
