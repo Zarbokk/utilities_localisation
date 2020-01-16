@@ -22,7 +22,7 @@ qz_90p = Quaternion(axis=[0, 0, 1], angle=np.pi / 2)
 def callback(msg):
     """"""
     global rate
-    barometer_depth=-msg.pose[0].position.z+np.random.normal()/20#random number between 1/20+-
+    barometer_depth=-msg.pose[0].position.z+np.random.normal()/30#random number between 1/20+-
     NED = PoseStamped()
     NED.header.stamp = rospy.Time.now()
     NED.header.frame_id = 'global_tank'
