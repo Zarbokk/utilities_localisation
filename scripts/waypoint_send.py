@@ -215,8 +215,8 @@ def callback(msg):
         # print("Yaw:",yaw*180.0/np.pi)
         # pitch = 0
         # print(yaw2)
-        #yaw2 = 100.0 / 180.0 * np.pi
-        #pitch = -20.0 / 180.0 * np.pi
+        yaw2 = 10.0 / 180.0 * np.pi
+        pitch = -20.0 / 180.0 * np.pi
         roll_old = 0.0 / 180.0 * np.pi
         #pitch=-pitch_old
         roll=roll_old
@@ -269,6 +269,7 @@ def callback(msg):
     # send_waypoint.yaw = np.pi / 4
 
     send_waypoint = AttitudeTarget()
+    send_waypoint.type_mask = 0
     send_waypoint.orientation.x = qz_90n.x
     send_waypoint.orientation.y = qz_90n.y
     send_waypoint.orientation.z = qz_90n.z
