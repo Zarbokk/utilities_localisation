@@ -3,14 +3,14 @@ import numpy as np
 
 from pyquaternion import Quaternion
 import rospy
-#import tf
+# import tf
 
 from geometry_msgs.msg import Pose, PoseArray, PoseStamped
 from visualization_msgs.msg import Marker, MarkerArray
 from mavros_msgs.msg import PositionTarget, AttitudeTarget
-#from numpy import genfromtxt
-#import os
-#import matplotlib.pyplot as plt
+# from numpy import genfromtxt
+# import os
+# import matplotlib.pyplot as plt
 import csv
 
 # publisher_waypoint = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
@@ -143,6 +143,8 @@ distance_to_point = 0.5
 thrust = 0.2
 carrot = 1
 p = create_inf()
+
+
 # print(np.transpose(p))
 # np.savetxt("infinity_symbol.csv",p,delimiter=",")
 # exit()
@@ -160,7 +162,7 @@ p = create_inf()
 
 def callback(msg):
     """"""
-    global current_pos_number, N, R, p, rate, thrust, carrot,yaw
+    global current_pos_number, N, R, p, rate, thrust, carrot, yaw
     # msg=PoseStamped()# SPAETER ENTFERNEN@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
     # msg.pose.position.x
@@ -215,22 +217,23 @@ def callback(msg):
         # print("Yaw:",yaw*180.0/np.pi)
         # pitch = 0
         # print(yaw2)
-        yaw2 = 10.0 / 180.0 * np.pi
-        pitch = -20.0 / 180.0 * np.pi
+        #yaw2 = -0.0 / 180.0 * np.pi
+        #pitch = 0.0 / 180.0 * np.pi
         roll_old = 0.0 / 180.0 * np.pi
-        #pitch=-pitch_old
-        roll=roll_old
-        #pitch = -pitch_old*np.cos(yaw2) + roll_old * np.sin(yaw2)
-        #roll = pitch_old * np.sin(yaw2) + roll_old * np.cos(yaw2)
+        # pitch=-pitch_old
+        roll = roll_old
+        # pitch = -pitch_old*np.cos(yaw2) + roll_old * np.sin(yaw2)
+        # roll = pitch_old * np.sin(yaw2) + roll_old * np.cos(yaw2)
         # print(pitch)
 
-        #qz_90n = Quaternion(axis=[0, 1, 0], angle=roll) * Quaternion(axis=[1, 0, 0], angle=pitch) * Quaternion(
+        # qz_90n = Quaternion(axis=[0, 1, 0], angle=roll) * Quaternion(axis=[1, 0, 0], angle=pitch) * Quaternion(
         #    axis=[0, 0, 1], angle=-( yaw2 - np.pi / 2))
-        #qz_90n = Quaternion(axis=[1, 0, 0], angle=roll) * Quaternion(axis=[0, 1, 0], angle=pitch) * Quaternion(
+        # qz_90n = Quaternion(axis=[1, 0, 0], angle=roll) * Quaternion(axis=[0, 1, 0], angle=pitch) * Quaternion(
         #    axis=[0, 0, 1], angle=yaw2)
         qz_90n = Quaternion(
-            axis=[0, 0, 1], angle=-( yaw2 - np.pi / 2))* Quaternion(axis=[0, 1, 0], angle=-pitch) * Quaternion(axis=[1, 0, 0], angle=roll)
-        #qz_90n = qz_90n*Quaternion(w=msg.pose.orientation.w,x=msg.pose.orientation.x,y=msg.pose.orientation.y,z=msg.pose.orientation.z)
+            axis=[0, 0, 1], angle=-(yaw2 - np.pi / 2)) * Quaternion(axis=[0, 1, 0], angle=-pitch) * Quaternion(
+            axis=[1, 0, 0], angle=roll)
+        # qz_90n = qz_90n*Quaternion(w=msg.pose.orientation.w,x=msg.pose.orientation.x,y=msg.pose.orientation.y,z=msg.pose.orientation.z)
 
     else:
 
@@ -322,13 +325,13 @@ def callback(msg):
 
 def main():
     rospy.init_node('waypoint_send')
-    global rate, R, wanted_z_position, distance_to_point, thrust,carrot,yaw
+    global rate, R, wanted_z_position, distance_to_point, thrust, carrot, yaw
     rate = rospy.Rate(30)
     rate_2 = rospy.Rate(5)
     rospy.Subscriber("/mavros/local_position/pose_NED", PoseStamped, callback, queue_size=1)
 
     while not rospy.is_shutdown():
-    #while 1:
+        # while 1:
         try:
             data_path = 'parameters.csv'
             with open(data_path, 'r') as f:
@@ -340,7 +343,7 @@ def main():
                 # transform data into numpy array
                 data = np.array(data).astype(float)
                 R, wanted_z_position, distance_to_point, thrust, carrot, yaw = data[0]
-                yaw=yaw/180*np.pi
+                yaw = yaw / 180 * np.pi
 
                 # print(R)
         except:

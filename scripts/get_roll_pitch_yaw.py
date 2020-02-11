@@ -29,12 +29,12 @@ def callback(msg):
                                      x=msg.pose.orientation.x,
                                      y=msg.pose.orientation.y,
                                      z=msg.pose.orientation.z)
-    yaw, pitch, roll = rotation_body_frame.yaw_pitch_roll
+    yaw, pitch, roll = rotation_body_frame.inverse.yaw_pitch_roll
     print("first:",yaw* 180.0 / np.pi, pitch* 180.0 / np.pi, roll* 180.0 / np.pi)
     #yaw = (-yaw - 90 / 180.0 * np.pi + 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi
     yaw=-yaw
     pitch = -pitch
-    roll = (roll+ 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi
+    roll =-( (roll+ 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi)
     print(yaw * 180.0 / np.pi, pitch * 180.0 / np.pi, roll * 180.0 / np.pi)
 
     rpy_msg = PointStamped()
