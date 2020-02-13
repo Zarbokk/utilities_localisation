@@ -176,6 +176,17 @@ def callback(msg):
         if current_pos_number > N - 1:
             current_pos_number = 0
         current_pos = p[1:4, current_pos_number]
+    rotation_body_frame = Quaternion(w=msg.pose.orientation.w,
+                                     x=msg.pose.orientation.x,
+                                     y=msg.pose.orientation.y,
+                                     z=msg.pose.orientation.z)
+    yaw, pitch, roll = rotation_body_frame.inverse.yaw_pitch_roll
+    #print("first:",yaw* 180.0 / np.pi, pitch* 180.0 / np.pi, roll* 180.0 / np.pi)
+    #yaw = (-yaw - 90 / 180.0 * np.pi + 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi
+    yaw_current=-yaw
+    pitch_current = -pitch
+    roll_current =-( (roll+ 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi)
+    print(roll_current * 180.0 / np.pi, pitch_current * 180.0 / np.pi, yaw_current * 180.0 / np.pi)
     # print(np.sqrt((msg.pose.position.x - current_pos[0]) ** 2 + (msg.pose.position.y - current_pos[1]) ** 2))
     # print("wanted_pos:", current_pos)
     # print("current_pos:", msg.pose.position.x, msg.pose.position.y)
@@ -217,7 +228,7 @@ def callback(msg):
         # print("Yaw:",yaw*180.0/np.pi)
         # pitch = 0
         # print(yaw2)
-        #yaw2 = -0.0 / 180.0 * np.pi
+        #yaw2 = 0.0 / 180.0 * np.pi
         #pitch = 0.0 / 180.0 * np.pi
         roll_old = 0.0 / 180.0 * np.pi
         # pitch=-pitch_old
@@ -279,7 +290,10 @@ def callback(msg):
     send_waypoint.orientation.w = qz_90n.w
     # print(qz_90n.x,qz_90n.y,qz_90n.z,qz_90n.w)
     # 0.2 works
-    send_waypoint.thrust = thrust
+    send_waypoint.thrust = thrust * np.cos(yaw_current - yaw2)
+    if abs(yaw_current-yaw2) > np.pi/2:
+        send_waypoint.thrust = 0
+
     publisher_waypoint.publish(send_waypoint)
     rate.sleep()
     rviz = True
