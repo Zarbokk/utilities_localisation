@@ -32,3 +32,12 @@ roslaunch px4 posix_sitl.launch
 
 
 
+
+Copy file to pi
+
+
+scp path_to_file pi@localization-pi: path to where to go
+scp tags.yaml pi@localization-pi:~/catkin_ws/src/apriltag_ros/config/
+
+
+
