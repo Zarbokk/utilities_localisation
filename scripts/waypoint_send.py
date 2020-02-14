@@ -186,7 +186,7 @@ def callback(msg):
     yaw_current=-yaw
     pitch_current = -pitch
     roll_current =-( (roll+ 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi)
-    print(roll_current * 180.0 / np.pi, pitch_current * 180.0 / np.pi, yaw_current * 180.0 / np.pi)
+    # print(roll_current * 180.0 / np.pi, pitch_current * 180.0 / np.pi, yaw_current * 180.0 / np.pi)
     # print(np.sqrt((msg.pose.position.x - current_pos[0]) ** 2 + (msg.pose.position.y - current_pos[1]) ** 2))
     # print("wanted_pos:", current_pos)
     # print("current_pos:", msg.pose.position.x, msg.pose.position.y)
