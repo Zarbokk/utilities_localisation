@@ -362,7 +362,6 @@ def main():
                 # print(R)
         except:
             pass
-        pass
         rate_2.sleep()
 
 
