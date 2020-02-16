@@ -297,10 +297,11 @@ def callback(msg):
     rate.sleep()
     rviz = True
     if rviz:
+
+        r = 0.05
         markerArray = MarkerArray()
         for i in range(p.shape[1]):
             if i == current_pos_number:
-                r = 0.1
                 marker = Marker()
                 marker.header.frame_id = "global_tank"
                 marker.id = i
@@ -317,7 +318,6 @@ def callback(msg):
                 marker.pose.position.z = wanted_z_position  # z
                 markerArray.markers.append(marker)
             else:
-                r = 0.1
                 marker = Marker()
                 marker.header.frame_id = "global_tank"
                 marker.id = i
