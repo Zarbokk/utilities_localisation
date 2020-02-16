@@ -85,30 +85,73 @@ distance_to_point = 0.5
 thrust = 0.2
 carrot = 1
 p = create_inf()
-
+def rotation_matrix(angle):
+    return np.asarray([[np.cos(angle),-np.sin(angle)],[np.sin(angle),np.cos(angle)]])
 
 def pathplanning(current_waypoint, current_position_boat):
     global current_path
+
     y_max = current_waypoint[1] - current_position_boat[1]
     x_max = current_waypoint[0] - current_position_boat[0]
     number_of_points = 10
-    if x_max > 0:
-        x = np.linspace(0, x_max, number_of_points)
-        c_cubic = -np.arctan2(-y_max, -x_max)
-    else:
-        x = np.linspace(x_max, 0, number_of_points)
-        c_cubic = np.arctan2(-y_max, -x_max)
-    d_cubic = 0
-    a_cubic = (y_max + c_cubic / 2.0 * x_max - current_waypoint[2] / 2.0 * x_max - c_cubic * x_max) / (
-            x_max ** 3 - 3.0 / 2.0 * x_max ** 3)
-    b_cubic = (current_waypoint[2] - c_cubic - 3.0 * a_cubic * x_max ** 2) / 2.0 / x_max
-    test = a_cubic * x ** 3 + b_cubic * x ** 2 + c_cubic * x + d_cubic
-    stammfunktion = a_cubic * x_max ** 3 + b_cubic * x_max ** 2 + c_cubic * x_max + d_cubic
-    ableitung = 3.0 * a_cubic * (x_max / 2.0) ** 2 + 2.0 * b_cubic * (x_max / 2.0) + c_cubic
 
-    x = x - x_max + current_waypoint[0]
-    test = test - y_max + current_waypoint[1]
-    current_path = np.asarray((x, test))
+
+    if False:
+        if x_max > 0:
+            x = np.linspace(0, x_max, number_of_points)
+            c_cubic = -np.arctan2(-y_max, -x_max)
+        else:
+            x = np.linspace(x_max, 0, number_of_points)
+            c_cubic = np.arctan2(-y_max, -x_max)
+        d_cubic = 0
+        a_cubic = (y_max + c_cubic / 2.0 * x_max - current_waypoint[2] / 2.0 * x_max - c_cubic * x_max) / (
+                x_max ** 3 - 3.0 / 2.0 * x_max ** 3)
+        b_cubic = (current_waypoint[2] - c_cubic - 3.0 * a_cubic * x_max ** 2) / 2.0 / x_max
+        test = a_cubic * x ** 3 + b_cubic * x ** 2 + c_cubic * x + d_cubic
+        stammfunktion = a_cubic * x_max ** 3 + b_cubic * x_max ** 2 + c_cubic * x_max + d_cubic
+        ableitung = 3.0 * a_cubic * (x_max / 2.0) ** 2 + 2.0 * b_cubic * (x_max / 2.0) + c_cubic
+
+        x = x - x_max + current_waypoint[0]
+        test = test - y_max + current_waypoint[1]
+
+    if x_max > 0 and y_max > 0:
+        angle_rotation_matrix = -np.arctan2(y_max, x_max)
+        R = rotation_matrix(angle_rotation_matrix)
+        R_return = rotation_matrix(-angle_rotation_matrix)
+        tmp = np.matmul(R , np.asarray((x_max, y_max)))
+        m = np.tan(np.arctan(current_waypoint[2]) - np.arctan2(y_max, x_max))
+        x = np.linspace(0, tmp[0], number_of_points)
+
+    if x_max < 0 and y_max > 0:
+        angle_rotation_matrix = np.pi - np.arctan2(y_max, x_max)
+        R = rotation_matrix(angle_rotation_matrix)
+        R_return = rotation_matrix(-angle_rotation_matrix)
+        tmp = np.matmul(R , np.asarray((x_max, y_max)))
+        m = np.tan(np.arctan(current_waypoint[2]) - np.arctan2(y_max, x_max))
+        x = np.linspace(tmp[0], 0, number_of_points)
+
+    if x_max > 0 and y_max < 0:
+        angle_rotation_matrix = -np.arctan2(y_max, x_max)
+        R = rotation_matrix(angle_rotation_matrix)
+        R_return = rotation_matrix(-angle_rotation_matrix)
+        tmp = np.matmul(R , np.asarray((x_max, y_max)))
+        m = np.tan(np.arctan(current_waypoint[2]) - np.arctan2(y_max, x_max))
+        x = np.linspace(0, tmp[0], number_of_points)
+
+    if x_max < 0 and y_max < 0:
+        angle_rotation_matrix = np.pi - np.arctan2(y_max, x_max)
+        R = rotation_matrix(angle_rotation_matrix)
+        R_return = rotation_matrix(-angle_rotation_matrix)
+        tmp = np.matmul(R , np.asarray((x_max, y_max)))
+        m = np.tan(np.arctan(current_waypoint[2]) - np.arctan2(y_max, x_max))
+        x = np.linspace(tmp[0], 0, number_of_points)
+
+    a = m / tmp[0] / tmp[0]
+    b = -m / tmp[0]
+    y = a * x **3 + b * x ** 2
+
+
+    current_path = np.matmul(R_return ,np.asarray((x,y)))+np.asarray([[current_position_boat[0]],[current_position_boat[1]]])
     return current_waypoint
 
 
