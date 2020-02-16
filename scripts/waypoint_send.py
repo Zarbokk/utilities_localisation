@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import numpy as np
-
+import rospkg
 from pyquaternion import Quaternion
 import rospy
 # import tf
@@ -57,8 +57,8 @@ def create_inf(dist_y=0.7, dist_x=0.9, r=0.5, dist_circle=1.2, N=100):
     waypoints_x = np.append(waypoints_x, np.linspace(p3_x, p4_x, N / 4))
     waypoints_y = np.append(waypoints_y, np.linspace(p3_y, p4_y, N / 4))
     # at point 4
-    print(waypoints_x.shape)
-    print(waypoints_y.shape)
+    #print(waypoints_x.shape)
+    #print(waypoints_y.shape)
     # plt.plot(waypoints_x, waypoints_y)
     # plt.plot(np.zeros(10), np.linspace(0, 2, 10))
     # plt.plot(np.ones(10) * 4.1, np.linspace(0, 2, 10))
@@ -70,7 +70,7 @@ def create_inf(dist_y=0.7, dist_x=0.9, r=0.5, dist_circle=1.2, N=100):
     # plt.show()
     waypoints_x = np.asarray(waypoints_x)
     waypoints_y = np.asarray(waypoints_y)
-    print(waypoints_x.shape)
+    #print(waypoints_x.shape)
     angle = np.zeros(N)
     for i in range(N):
         left_point = i - 1
@@ -84,7 +84,7 @@ def create_inf(dist_y=0.7, dist_x=0.9, r=0.5, dist_circle=1.2, N=100):
         angle_trajectory = np.arctan2((-waypoints_y[left_point] + waypoints_y[right_point]),
                                       (-waypoints_x[left_point] + waypoints_x[right_point]))
         angle[i] = angle_trajectory
-        print(angle_trajectory)
+        #print(angle_trajectory)
 
     return (np.asarray([range(0, N), waypoints_x, waypoints_y, angle]))
 
@@ -293,7 +293,6 @@ def callback(msg):
     send_waypoint.thrust = thrust * np.cos(yaw_current - yaw2)
     if abs(yaw_current-yaw2) > np.pi/2:
         send_waypoint.thrust = 0
-
     publisher_waypoint.publish(send_waypoint)
     rate.sleep()
     rviz = True
@@ -344,10 +343,12 @@ def main():
     rate_2 = rospy.Rate(5)
     rospy.Subscriber("/mavros/local_position/pose_NED", PoseStamped, callback, queue_size=1)
 
+    rospack=rospkg.RosPack()
+    data_path = rospack.get_path("utilities_localisation")+'/scripts/parameters.csv'
     while not rospy.is_shutdown():
         # while 1:
         try:
-            data_path = 'parameters.csv'
+
             with open(data_path, 'r') as f:
                 reader = csv.reader(f, delimiter=',')
                 # get header from first row

@@ -97,10 +97,11 @@ def main():
     thrust = 0.2
     carrot = 1
     p = create_inf()
-    rate = rospy.Rate(30)
+    rate = rospy.Rate(5)
     publisher_waypoint = rospy.Publisher('inf', PoseStamped, queue_size=1)
     #print(p.shape)
-    for j in range(10):
+    #for j in range(10):
+    while(not rospy.is_shutdown()):
         if not rospy.is_shutdown():
             for i in range(100):
                 if  not rospy.is_shutdown():
