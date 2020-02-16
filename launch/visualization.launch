@@ -1,0 +1,7 @@
+<launch>
+    <arg name="launch_prefix" default="" />
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find utilities_localisation)/rviz_visualization.rviz" />
+    <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui"/>
+    <node name="rqt_multiplot" pkg="rqt_multiplot" type="rqt_multiplot" args="--multiplot-config:=$(find utilities_localisation)/visualization_gazeebo_rqt_multiplot.xml" />
+    <node pkg="utilities_localisation" type="Send_infinity_to_rqt_multiplot.py" name="infinity_visualization" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
+</launch>
