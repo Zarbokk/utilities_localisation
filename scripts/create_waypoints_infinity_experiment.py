@@ -161,8 +161,8 @@ def pathplanning(current_waypoint, current_position_boat):
         [[current_position_boat[0]], [current_position_boat[1]]])
     point_to_be_controlled_on = current_path[:, number_of_points / 2]
     # print(point_to_be_controlled_on)
-    # return current_waypoint
-    return point_to_be_controlled_on
+    return current_waypoint
+    # return point_to_be_controlled_on
 
 
 def visualization():
