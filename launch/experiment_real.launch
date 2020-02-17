@@ -6,5 +6,6 @@
     <include file="$(find mu_auv_localization)/launch/start_localization.launch"> </include>
     <!-- start waypoints -->
     <include file="$(find utilities_localisation)/launch/drive_infinity.launch"> </include>
-
+<node pkg="rosbag" type="record" name="rosbag_record_experiment"
+       args="record -o /estimated_pose /mavros/local_position/pose_NED /mavros/imu/data /pose_boat_NED /tag_detections_image /tag_detections /infinity /Sphere"
 </launch>
