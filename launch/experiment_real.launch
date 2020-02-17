@@ -1,0 +1,8 @@
+<launch>
+    <arg name="launch_prefix" default="" />
+    <!-- start localization gazebo-->
+    <include file="$(find mu_auv_localization)/launch/start.launch"> </include>
+    <!-- start waypoints -->
+    <include file="$(find utilities_localisation)/launch/drive_infinity.launch"> </include>
+
+</launch>

@@ -79,14 +79,22 @@ def create_inf(dist_y=0.7, dist_x=0.9, r=0.5, dist_circle=1.2, N=100):
     return (np.asarray([range(0, N), waypoints_x, waypoints_y, angle]))
 
 
-R = 0.2
-wanted_z_position = 0
-distance_to_point = 0.5
-thrust = 0.2
+auftauchen = False
+current_parameters = 0
+R = 0.5
+wanted_z_position = 0.5
+distance_to_point = 0.8
+thrust = 0.4
 carrot = 1
+roll_desired = 0
 p = create_inf()
+do_roll = False
+just_changed = False
+
+
 def rotation_matrix(angle):
-    return np.asarray([[np.cos(angle),-np.sin(angle)],[np.sin(angle),np.cos(angle)]])
+    return np.asarray([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])
+
 
 def pathplanning(current_waypoint, current_position_boat):
     global current_path
@@ -94,7 +102,6 @@ def pathplanning(current_waypoint, current_position_boat):
     y_max = current_waypoint[1] - current_position_boat[1]
     x_max = current_waypoint[0] - current_position_boat[0]
     number_of_points = 10
-
 
     if False:
         if x_max > 0:
@@ -118,7 +125,7 @@ def pathplanning(current_waypoint, current_position_boat):
         angle_rotation_matrix = -np.arctan2(y_max, x_max)
         R = rotation_matrix(angle_rotation_matrix)
         R_return = rotation_matrix(-angle_rotation_matrix)
-        tmp = np.matmul(R , np.asarray((x_max, y_max)))
+        tmp = np.matmul(R, np.asarray((x_max, y_max)))
         m = np.tan(np.arctan(current_waypoint[2]) - np.arctan2(y_max, x_max))
         x = np.linspace(0, tmp[0], number_of_points)
 
@@ -126,7 +133,7 @@ def pathplanning(current_waypoint, current_position_boat):
         angle_rotation_matrix = np.pi - np.arctan2(y_max, x_max)
         R = rotation_matrix(angle_rotation_matrix)
         R_return = rotation_matrix(-angle_rotation_matrix)
-        tmp = np.matmul(R , np.asarray((x_max, y_max)))
+        tmp = np.matmul(R, np.asarray((x_max, y_max)))
         m = np.tan(np.arctan(current_waypoint[2]) - np.arctan2(y_max, x_max))
         x = np.linspace(tmp[0], 0, number_of_points)
 
@@ -134,7 +141,7 @@ def pathplanning(current_waypoint, current_position_boat):
         angle_rotation_matrix = -np.arctan2(y_max, x_max)
         R = rotation_matrix(angle_rotation_matrix)
         R_return = rotation_matrix(-angle_rotation_matrix)
-        tmp = np.matmul(R , np.asarray((x_max, y_max)))
+        tmp = np.matmul(R, np.asarray((x_max, y_max)))
         m = np.tan(np.arctan(current_waypoint[2]) - np.arctan2(y_max, x_max))
         x = np.linspace(0, tmp[0], number_of_points)
 
@@ -142,19 +149,19 @@ def pathplanning(current_waypoint, current_position_boat):
         angle_rotation_matrix = np.pi - np.arctan2(y_max, x_max)
         R = rotation_matrix(angle_rotation_matrix)
         R_return = rotation_matrix(-angle_rotation_matrix)
-        tmp = np.matmul(R , np.asarray((x_max, y_max)))
+        tmp = np.matmul(R, np.asarray((x_max, y_max)))
         m = np.tan(np.arctan(current_waypoint[2]) - np.arctan2(y_max, x_max))
         x = np.linspace(tmp[0], 0, number_of_points)
 
     a = m / tmp[0] / tmp[0]
     b = -m / tmp[0]
-    y = a * x **3 + b * x ** 2
+    y = a * x ** 3 + b * x ** 2
 
-
-    current_path = np.matmul(R_return ,np.asarray((x,y)))+np.asarray([[current_position_boat[0]],[current_position_boat[1]]])
-    point_to_be_controlled_on=current_path[:,number_of_points/2]
-    print(point_to_be_controlled_on)
-    #return current_waypoint
+    current_path = np.matmul(R_return, np.asarray((x, y))) + np.asarray(
+        [[current_position_boat[0]], [current_position_boat[1]]])
+    point_to_be_controlled_on = current_path[:, number_of_points / 2]
+    # print(point_to_be_controlled_on)
+    # return current_waypoint
     return point_to_be_controlled_on
 
 
@@ -206,8 +213,8 @@ def visualization():
         marker.color.g = 1
         marker.color.a = 1  # transparency
         marker.pose.orientation.w = 1.0
-        marker.pose.position.x = current_path[0,i]  # x
-        marker.pose.position.y = current_path[1,i]  # y
+        marker.pose.position.x = current_path[0, i]  # x
+        marker.pose.position.y = current_path[1, i]  # y
         marker.pose.position.z = wanted_z_position  # z
         markerArray.markers.append(marker)
     marker = Marker()
@@ -222,8 +229,8 @@ def visualization():
     marker.color.r = 1
     marker.color.a = 1  # transparency
     marker.pose.orientation.w = 1.0
-    marker.pose.position.x = current_path[0,10/2]  # x
-    marker.pose.position.y = current_path[1,10/2]  # y
+    marker.pose.position.x = current_path[0, 10 / 2]  # x
+    marker.pose.position.y = current_path[1, 10 / 2]  # y
     marker.pose.position.z = wanted_z_position  # z
     markerArray.markers.append(marker)
 
@@ -232,7 +239,7 @@ def visualization():
 
 def callback(msg):
     """"""
-    global current_pos_number, N, R, p, rate, thrust, carrot, yaw
+    global current_pos_number, N, R, p, rate, thrust, carrot, just_changed,do_roll
     current_pos = p[1:4, current_pos_number]
     # look if next waypoint should be loaded
     if np.sqrt(
@@ -241,7 +248,11 @@ def callback(msg):
         if current_pos_number > N - 1:
             current_pos_number = 0
         current_pos = p[1:4, current_pos_number]
-
+    if current_pos_number == 24 and not just_changed:  # every time the the 24 waypoint is seen, then parameter can change
+        change_parameter()
+        just_changed = True
+    if current_pos_number == 25:
+        just_changed = False
     current_waypoint = pathplanning(current_pos, np.asarray([msg.pose.position.x, msg.pose.position.y]))
     rviz = True
     if rviz:
@@ -258,9 +269,22 @@ def callback(msg):
     roll_current = -((roll_current + 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi)
     yaw_des = np.arctan2((current_waypoint[1] - msg.pose.position.y), (current_waypoint[0] - msg.pose.position.x))
     pitch_des = -np.arctan((wanted_z_position - msg.pose.position.z) / distance_to_point)
+    roll_des = 0.0 / 180.0 * np.pi
+    if auftauchen:
+        pitch_des = np.pi / 2 - 0.2
+        yaw_des = 0
+        roll_des = 0
+    if do_roll and current_pos_number > 40:
+        if roll_current < np.pi / 2 and roll_current > 0:
+            roll_des = np.pi / 1.5
+        if roll_current < np.pi  and roll_current > np.pi / 2:
+            roll_des = -np.pi / 1.5
+        if roll_current < -np.pi/2 and roll_current > -np.pi+0.2:
+            roll_des = 0
+            do_roll = False
     # yaw_des = 0.0 / 180.0 * np.pi
     # pitch_des = 0.0 / 180.0 * np.pi
-    roll_des = 0.0 / 180.0 * np.pi
+
     qz_90n = Quaternion(
         axis=[0, 0, 1], angle=-(yaw_des - np.pi / 2)) * Quaternion(axis=[0, 1, 0], angle=-pitch_des) * Quaternion(
         axis=[1, 0, 0], angle=roll_des)
@@ -282,33 +306,43 @@ def callback(msg):
     rate.sleep()
 
 
+def change_parameter():
+    global current_parameters, R, thrust, distance_to_point, wanted_z_position, carrot, do_roll, auftauchen
+    current_parameters = current_parameters + 1
+    if current_parameters == 1:
+        R = 0.5
+        wanted_z_position = 0.5
+        distance_to_point = 0.8
+        thrust = 0.2
+        do_roll = True
+    if current_parameters == 2:
+        R = 0.5
+        wanted_z_position = 0.7
+        distance_to_point = 0.8
+        thrust = 0.2
+        do_roll = False
+    if current_parameters == 3:
+        R = 0.5
+        wanted_z_position = 0.9
+        distance_to_point = 0.8
+        thrust = 0.2
+        do_roll = False
+    if current_parameters == 4:
+        R = 0.5
+        wanted_z_position = 0.5
+        distance_to_point = 0.8
+        thrust = 0.2
+        auftauchen = True
+        do_roll = False
+    return
+
+
 def main():
     rospy.init_node('waypoint_send')
     global rate, R, wanted_z_position, distance_to_point, thrust, carrot, yaw
     rate = rospy.Rate(30)
-    rate_2 = rospy.Rate(5)
     rospy.Subscriber("/mavros/local_position/pose_NED", PoseStamped, callback, queue_size=1)
-
-    rospack = rospkg.RosPack()
-    data_path = rospack.get_path("utilities_localisation") + '/scripts/parameters.csv'
-    while not rospy.is_shutdown():
-        # while 1:
-        try:
-            with open(data_path, 'r') as f:
-                reader = csv.reader(f, delimiter=',')
-                # get header from first row
-                headers = next(reader)
-                # get all the rows as a list
-                data = list(reader)
-                # transform data into numpy array
-                data = np.array(data).astype(float)
-                R, wanted_z_position, distance_to_point, thrust, carrot, yaw = data[0]
-                yaw = yaw / 180 * np.pi
-
-                # print(R)
-        except:
-            pass
-        rate_2.sleep()
+    rospy.spin()
 
 
 if __name__ == '__main__':
