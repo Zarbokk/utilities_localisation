@@ -1,0 +1,7 @@
+<launch>
+    <arg name="launch_prefix" default="" />
+    <node pkg="utilities_localisation" type="visualization_rviz_infinity_mavros_only.py" name="visualization_rviz" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
+    <include file="$(find mavros)/launch/px4.launch">
+    </include>
+
+</launch>
