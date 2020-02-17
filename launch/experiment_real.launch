@@ -1,5 +1,7 @@
 <launch>
     <arg name="launch_prefix" default="" />
+    <!-- Start Mavros-->
+    <include file="$(find mavros)/launch/px4.launch"> </include>
     <!-- start localization gazebo-->
     <include file="$(find mu_auv_localization)/launch/start.launch"> </include>
     <!-- start waypoints -->
