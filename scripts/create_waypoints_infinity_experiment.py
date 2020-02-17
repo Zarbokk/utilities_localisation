@@ -161,8 +161,8 @@ def pathplanning(current_waypoint, current_position_boat):
         [[current_position_boat[0]], [current_position_boat[1]]])
     point_to_be_controlled_on = current_path[:, number_of_points / 2]
     # print(point_to_be_controlled_on)
-    return current_waypoint
-    # return point_to_be_controlled_on
+    # return current_waypoint
+    return point_to_be_controlled_on
 
 
 def visualization():
@@ -274,7 +274,7 @@ def callback(msg):
         pitch_des = np.pi / 2 - 0.1
         yaw_des = 0
         roll_des = 0
-    if do_roll and current_pos_number > 40:
+    if do_roll and current_pos_number > 30:
         if roll_current < np.pi / 2 and roll_current > 0:
             roll_des = np.pi / 1.5
         if roll_current < np.pi  and roll_current > np.pi / 2:
@@ -314,7 +314,7 @@ def change_parameter():
         wanted_z_position = 0.5
         distance_to_point = 0.8
         thrust = 0.05
-        do_roll = True
+        do_roll = False
     if current_parameters == 2:
         R = 0.5
         wanted_z_position = 0.7
