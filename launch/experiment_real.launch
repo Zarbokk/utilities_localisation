@@ -3,7 +3,7 @@
     <!-- Start Mavros-->
     <include file="$(find mavros)/launch/px4.launch"> </include>
     <!-- start localization gazebo-->
-    <include file="$(find mu_auv_localization)/launch/start.launch"> </include>
+    <include file="$(find mu_auv_localization)/launch/start_localization.launch"> </include>
     <!-- start waypoints -->
     <include file="$(find utilities_localisation)/launch/drive_infinity.launch"> </include>
 

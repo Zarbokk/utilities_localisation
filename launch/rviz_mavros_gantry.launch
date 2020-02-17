@@ -1,6 +1,9 @@
 <launch>
     <arg name="launch_prefix" default="" />
     <node pkg="utilities_localisation" type="visualization_rviz_infinity_mavros_only.py" name="visualization_rviz" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
+              <!-- ENU_to_NED -->
+<node pkg="hippocampus_tools_ros" type="mavros_local_pos_ENU_to_NED.py" name="enu_to_ned_tank_coordinate_system" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+  </node>
     <include file="$(find mavros)/launch/px4.launch">
     </include>
 </launch>
