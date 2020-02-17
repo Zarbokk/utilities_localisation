@@ -271,7 +271,7 @@ def callback(msg):
     pitch_des = -np.arctan((wanted_z_position - msg.pose.position.z) / distance_to_point)
     roll_des = 0.0 / 180.0 * np.pi
     if auftauchen:
-        pitch_des = np.pi / 2 - 0.2
+        pitch_des = np.pi / 2 - 0.1
         yaw_des = 0
         roll_des = 0
     if do_roll and current_pos_number > 40:
@@ -313,25 +313,25 @@ def change_parameter():
         R = 0.5
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.1
+        thrust = 0.05
         do_roll = False
     if current_parameters == 2:
         R = 0.5
         wanted_z_position = 0.7
         distance_to_point = 0.8
-        thrust = 0.1
+        thrust = 0.05
         do_roll = False
     if current_parameters == 3:
         R = 0.5
         wanted_z_position = 0.9
         distance_to_point = 0.8
-        thrust = 0.1
+        thrust = 0.05
         do_roll = False
     if current_parameters == 3:#WROING DO 4
         R = 0.5
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.1
+        thrust = 0.05
         auftauchen = True
         do_roll = False
     return
