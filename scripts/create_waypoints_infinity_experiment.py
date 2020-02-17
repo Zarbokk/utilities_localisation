@@ -313,25 +313,25 @@ def change_parameter():
         R = 0.5
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.2
+        thrust = 0.1
         do_roll = True
     if current_parameters == 2:
         R = 0.5
         wanted_z_position = 0.7
         distance_to_point = 0.8
-        thrust = 0.2
+        thrust = 0.1
         do_roll = False
     if current_parameters == 3:
         R = 0.5
         wanted_z_position = 0.9
         distance_to_point = 0.8
-        thrust = 0.2
+        thrust = 0.1
         do_roll = False
     if current_parameters == 3:#WROING DO 4
         R = 0.5
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.2
+        thrust = 0.1
         auftauchen = True
         do_roll = False
     return
