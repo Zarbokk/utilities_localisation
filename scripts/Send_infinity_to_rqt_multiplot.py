@@ -57,8 +57,8 @@ def create_inf(dist_y=0.7, dist_x=0.9, r=0.5, dist_circle=1.2, N=100):
     waypoints_x = np.append(waypoints_x, np.linspace(p3_x, p4_x, N / 4))
     waypoints_y = np.append(waypoints_y, np.linspace(p3_y, p4_y, N / 4))
     # at point 4
-    print(waypoints_x.shape)
-    print(waypoints_y.shape)
+    #print(waypoints_x.shape)
+    #print(waypoints_y.shape)
     # plt.plot(waypoints_x, waypoints_y)
     # plt.plot(np.zeros(10), np.linspace(0, 2, 10))
     # plt.plot(np.ones(10) * 4.1, np.linspace(0, 2, 10))
@@ -70,7 +70,7 @@ def create_inf(dist_y=0.7, dist_x=0.9, r=0.5, dist_circle=1.2, N=100):
     # plt.show()
     waypoints_x = np.asarray(waypoints_x)
     waypoints_y = np.asarray(waypoints_y)
-    print(waypoints_x.shape)
+    #print(waypoints_x.shape)
     angle = np.zeros(N)
     for i in range(N):
         left_point = i - 1
@@ -90,23 +90,27 @@ def create_inf(dist_y=0.7, dist_x=0.9, r=0.5, dist_circle=1.2, N=100):
 
 
 def main():
-    rospy.init_node('waypoint_send')
+    rospy.init_node('print_inf_rqt')
     R = 0.2
     wanted_z_position = 0
     distance_to_point = 0.5
     thrust = 0.2
     carrot = 1
     p = create_inf()
-    rate = rospy.Rate(30)
+    rate = rospy.Rate(5)
     publisher_waypoint = rospy.Publisher('inf', PoseStamped, queue_size=1)
-    print(p.shape)
-    while True:
-        for i in range(100):
-            msg = PoseStamped()
-            msg.pose.position.x = p[1, i]
-            msg.pose.position.y = p[2, i]
-            publisher_waypoint.publish(msg)
-            rate.sleep()
+    #print(p.shape)
+    #for j in range(10):
+    while(not rospy.is_shutdown()):
+        if not rospy.is_shutdown():
+            for i in range(100):
+                if  not rospy.is_shutdown():
+                    msg = PoseStamped()
+                    msg.pose.position.x = p[1, i]
+                    msg.pose.position.y = p[2, i]
+                    publisher_waypoint.publish(msg)
+                    rate.sleep()
+
 
 
 if __name__ == '__main__':

@@ -1,0 +1,4 @@
+<launch>
+    <arg name="launch_prefix" default="" />
+    <node pkg="utilities_localisation" type="create_waypoints_infinity_experiment.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
+</launch>
