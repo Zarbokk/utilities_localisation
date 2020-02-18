@@ -161,8 +161,8 @@ def pathplanning(current_waypoint, current_position_boat):
         [[current_position_boat[0]], [current_position_boat[1]]])
     point_to_be_controlled_on = current_path[:, number_of_points / 2]
     # print(point_to_be_controlled_on)
-    return current_waypoint
-    # return point_to_be_controlled_on
+    # return current_waypoint
+    return point_to_be_controlled_on
 
 
 def visualization():
@@ -314,7 +314,7 @@ def change_parameter():
         wanted_z_position = 0.5
         distance_to_point = 0.8
         thrust = 0.15
-        do_roll = True
+        do_roll = False
     if current_parameters == 2:
         R = 0.4
         wanted_z_position = 0.7
