@@ -7,6 +7,6 @@
     <!-- start waypoints -->
     <include file="$(find utilities_localisation)/launch/drive_infinity.launch"> </include>
         <!-- use rosbag to track data -->
-    <include file="$(find utilities_localisation)/launch/drive_infinity.launch"> </include>
+    <include file="$(find utilities_localisation)/launch/rosbag_record_experiment.launch"> </include>
 
 </launch>
