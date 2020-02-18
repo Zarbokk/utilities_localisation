@@ -81,7 +81,7 @@ def create_inf(dist_y=0.7, dist_x=0.9, r=0.5, dist_circle=1.2, N=100):
 
 auftauchen = False
 current_parameters = 0
-R = 0.3
+R = 0.4
 wanted_z_position = 0.5
 distance_to_point = 0.8
 thrust = 0.15
@@ -310,25 +310,25 @@ def change_parameter():
     global current_parameters, R, thrust, distance_to_point, wanted_z_position, carrot, do_roll, auftauchen
     current_parameters = current_parameters + 1
     if current_parameters == 1:
-        R = 0.3
+        R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
         thrust = 0.15
-        do_roll = False
+        do_roll = True
     if current_parameters == 2:
-        R = 0.3
+        R = 0.4
         wanted_z_position = 0.7
         distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
     if current_parameters == 3:
-        R = 0.3
+        R = 0.4
         wanted_z_position = 0.9
         distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
     if current_parameters == 3:#WRONG DO 4
-        R = 0.3
+        R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
         thrust = 0.15
