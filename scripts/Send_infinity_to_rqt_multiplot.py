@@ -99,7 +99,6 @@ def main():
     p = create_inf()
     rate = rospy.Rate(5)
     publisher_waypoint = rospy.Publisher('inf', PoseStamped, queue_size=1)
-    #print(p.shape)
     #for j in range(10):
     while(not rospy.is_shutdown()):
         if not rospy.is_shutdown():
