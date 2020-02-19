@@ -17,7 +17,7 @@ import csv
 # publisher_waypoint = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget, queue_size=1)
 publisher_waypoint = rospy.Publisher('mavros/setpoint_raw/attitude', AttitudeTarget, queue_size=1)
 publisher_marker = rospy.Publisher('/infinity', MarkerArray, queue_size=1)
-current_pos_number = 10
+current_pos_number = 0
 N = 100
 rate = None
 current_path = None
@@ -311,20 +311,20 @@ def change_parameter():
     current_parameters = current_parameters + 1
     if current_parameters == 1:
         R = 0.5
-        wanted_z_position = 1
-        distance_to_point = 0.5
+        wanted_z_position = 0.5
+        distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
     if current_parameters == 2:
         R = 0.5
-        wanted_z_position = 1
-        distance_to_point = 0.7
+        wanted_z_position = 0.7
+        distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
     if current_parameters == 3:
         R = 0.5
-        wanted_z_position = 1
-        distance_to_point = 0.9
+        wanted_z_position = 0.9
+        distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
     if current_parameters == 3:#WRONG DO 4

@@ -1,0 +1,9 @@
+<launch>
+    <arg name="launch_prefix" default="" />
+    <!-- Start Mavros-->
+    <include file="$(find mavros)/launch/px4.launch"> </include>
+    <!-- start localization gazebo-->
+    <include file="$(find mu_auv_localization)/launch/start_localization.launch"> </include>
+    <!-- use rosbag to track data -->
+    <include file="$(find utilities_localisation)/launch/recording_tag_detections_rosbag.launch"> </include>
+</launch>
