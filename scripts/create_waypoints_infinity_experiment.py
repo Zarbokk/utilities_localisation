@@ -84,7 +84,7 @@ current_parameters = 0
 R = 0.5
 wanted_z_position = 0.5
 distance_to_point = 0.8
-thrust = 0.1
+thrust = 0.15
 carrot = 1
 roll_desired = 0
 p = create_inf()
@@ -161,8 +161,8 @@ def pathplanning(current_waypoint, current_position_boat):
         [[current_position_boat[0]], [current_position_boat[1]]])
     point_to_be_controlled_on = current_path[:, number_of_points / 2]
     # print(point_to_be_controlled_on)
-    return current_waypoint
-    # return point_to_be_controlled_on
+    # return current_waypoint
+    return point_to_be_controlled_on
 
 
 def visualization():
@@ -311,27 +311,27 @@ def change_parameter():
     current_parameters = current_parameters + 1
     if current_parameters == 1:
         R = 0.5
-        wanted_z_position = 0.5
-        distance_to_point = 0.8
-        thrust = 0.1
+        wanted_z_position = 1
+        distance_to_point = 0.5
+        thrust = 0.15
         do_roll = False
     if current_parameters == 2:
         R = 0.5
-        wanted_z_position = 0.7
-        distance_to_point = 0.8
-        thrust = 0.1
+        wanted_z_position = 1
+        distance_to_point = 0.7
+        thrust = 0.15
         do_roll = False
     if current_parameters == 3:
         R = 0.5
-        wanted_z_position = 0.9
-        distance_to_point = 0.8
-        thrust = 0.1
+        wanted_z_position = 1
+        distance_to_point = 0.9
+        thrust = 0.15
         do_roll = False
     if current_parameters == 3:#WRONG DO 4
         R = 0.5
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.1
+        thrust = 0.15
         auftauchen = True
         do_roll = False
     return
