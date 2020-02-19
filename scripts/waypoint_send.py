@@ -345,10 +345,11 @@ def main():
 
     rospack=rospkg.RosPack()
     data_path = rospack.get_path("utilities_localisation")+'/scripts/parameters.csv'
+
     while not rospy.is_shutdown():
         # while 1:
-        try:
 
+        try:
             with open(data_path, 'r') as f:
                 reader = csv.reader(f, delimiter=',')
                 # get header from first row
