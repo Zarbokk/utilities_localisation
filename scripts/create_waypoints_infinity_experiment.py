@@ -17,7 +17,7 @@ import csv
 # publisher_waypoint = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget, queue_size=1)
 publisher_waypoint = rospy.Publisher('mavros/setpoint_raw/attitude', AttitudeTarget, queue_size=1)
 publisher_marker = rospy.Publisher('/infinity', MarkerArray, queue_size=1)
-current_pos_number = 10
+current_pos_number = 0
 N = 100
 rate = None
 current_path = None
