@@ -274,7 +274,7 @@ def callback(msg):
         pitch_des = np.pi / 2 - 0.1
         yaw_des = 0
         roll_des = 0
-    if do_roll and current_pos_number > 30:
+    if do_roll and current_pos_number > 80:
         if roll_current < np.pi / 2 and roll_current > 0:
             roll_des = np.pi / 1.5
         if roll_current < np.pi  and roll_current > np.pi / 2:
