@@ -123,7 +123,7 @@
                                 <type>3</type>
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>estimated_pose_april</title>
+                            <title>different ekf filter</title>
                         </curve_1>
                         <curve_2>
                             <axes>
@@ -171,7 +171,7 @@
                                 <steps_invert>false</steps_invert>
                                 <sticks_baseline>0</sticks_baseline>
                                 <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
+                                <type>3</type>
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>gazebo_pose</title>
@@ -276,7 +276,7 @@
                                 <type>3</type>
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>different ekf filter</title>
+                            <title>estimated_pose_april</title>
                         </curve_4>
                     </curves>
                     <legend>
