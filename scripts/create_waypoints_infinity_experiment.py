@@ -309,25 +309,25 @@ def callback(msg):
 def change_parameter():
     global current_parameters, R, thrust, distance_to_point, wanted_z_position, carrot, do_roll, auftauchen
     current_parameters = current_parameters + 1
-    if current_parameters == 1:
+    if current_parameters == 1 or current_parameters == 2 or current_parameters == 3:
         R = 0.5
         wanted_z_position = 0.5
         distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
-    if current_parameters == 2:
+    if current_parameters == 4 or current_parameters == 5 or current_parameters == 6:
         R = 0.5
         wanted_z_position = 0.7
         distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
-    if current_parameters == 3:
+    if current_parameters == 7 or current_parameters == 8 or current_parameters == 9:
         R = 0.5
         wanted_z_position = 0.9
         distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
-    if current_parameters == 3:#WRONG DO 4
+    if current_parameters == 10:#WRONG DO 4
         R = 0.5
         wanted_z_position = 0.5
         distance_to_point = 0.8
