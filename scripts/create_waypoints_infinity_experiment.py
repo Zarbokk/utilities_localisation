@@ -317,7 +317,7 @@ def change_parameter():
         do_roll = False
     if current_parameters == 1 or current_parameters == 1 or current_parameters == 1:
         R = 0.5
-        wanted_z_position = 0.7
+        wanted_z_position = 1
         distance_to_point = 0.8
         thrust = 0.2
         do_roll = False
