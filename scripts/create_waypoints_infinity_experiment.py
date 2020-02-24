@@ -277,7 +277,6 @@ def callback(msg):
         pitch_des = np.pi / 2 - 0.1
         yaw_des = 0
         roll_des = 0
-    print(current_pos_number)
 
     send_waypoint.thrust = thrust * np.cos(yaw_current - yaw_des) * np.cos(roll_current - roll_des) * np.cos(
         pitch_current - pitch_des)
