@@ -292,7 +292,7 @@ def callback(msg):
         if roll_des > -np.pi / 3 and roll_des < 0:
             roll_des = 0
             do_roll = False
-        send_waypoint.thrust = thrust*0.5
+        send_waypoint.thrust = thrust*0.2
     # yaw_des = 0.0 / 180.0 * np.pi
     # pitch_des = 0.0 / 180.0 * np.pi
 
@@ -326,7 +326,7 @@ def change_parameter():
         distance_to_point = 0.8
         thrust = 0.15
         do_roll = True
-    if current_parameters == 2 or current_parameters == 2 or current_parameters == 2:
+    if current_parameters == 3 or current_parameters == 3 or current_parameters == 3:
         R = 0.5
         wanted_z_position = 0.7
         distance_to_point = 0.8
