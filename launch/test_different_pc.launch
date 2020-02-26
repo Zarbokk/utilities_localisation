@@ -1,5 +1,5 @@
 <launch>
-    <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/setup.bash" user="pi" password="raspberry"/>
+    <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/setup.bash" user="pi"/>
 
 
    <node machine="meas-pi" name="meas_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
