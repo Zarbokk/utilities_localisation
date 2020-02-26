@@ -1,8 +1,8 @@
 <launch>
-    <machine name="mum-ThinkPad-L580" address="192.168.0.191" env-loader="/opt/ros/melodic/env.sh" user="mum"/>
+    <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/setup.bash" user="pi"/>
 
 
-   <node machine="mum-ThinkPad-L580" name="localization_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+   <node machine="meas-pi" name="meas_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
         <param name="video_device" value="/dev/video0" />
         <param name="image_width" value="640" />
         <param name="image_height" value="480" />
