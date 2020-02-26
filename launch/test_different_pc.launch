@@ -8,7 +8,7 @@
         <param name="image_height" value="480" />
         <param name="framerate" value="30" />
         <param name="pixel_format" value="yuyv" />
-        <param name="camera_frame_id" value="localization_cam" />
+        <param name="camera_frame_id" value="meas_cam" />
         <param name="io_method" value="mmap"/>
     </node>
 
