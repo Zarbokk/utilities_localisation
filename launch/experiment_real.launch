@@ -9,7 +9,7 @@
         <!-- use rosbag to track data
     <include file="$(find utilities_localisation)/launch/rosbag_record_experiment.launch"> </include>-->
     <!-- Start Recording everything on the meas-pi and start the video -->
-    <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/setup.bash" user="pi" password="raspberry"/>
+    <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
 
 
         <node machine="meas-pi" name="meas_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
