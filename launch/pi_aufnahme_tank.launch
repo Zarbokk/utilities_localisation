@@ -1,17 +1,13 @@
 <launch>
     <arg name="launch_prefix" default=""/>
 
-    <node name="camera_top" pkg="usb_cam" type="usb_cam_node" output="screen" >
+        <node name="tank_camera" pkg="usb_cam" type="usb_cam_node" output="screen" >
             <param name="video_device" value="/dev/video0" />
             <param name="image_width" value="1920" />
             <param name="image_height" value="1080" />
             <param name="framerate" value="30" />
             <param name="pixel_format" value="yuyv" />
-            <param name="camera_frame_id" value="camera_top" />
+            <param name="camera_frame_id" value="tank_camera" />
             <param name="io_method" value="mmap"/>
-    </node>
-        <!--tmp
-        <node pkg="rosbag" type="record" name="rosbag_record_diag"
-            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment "
-    />-->
+        </node>
 </launch>
