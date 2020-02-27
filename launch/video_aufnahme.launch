@@ -12,6 +12,6 @@
     </node>
         <!--tmp -->
         <node pkg="rosbag" type="record" name="rosbag_record_diag"
-            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /tank_camera/image_raw /camera_top/image_raw/compressed"
+            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /raspicam_node/image/compressed /camera_top/image_raw/compressed"
     />
 </launch>
