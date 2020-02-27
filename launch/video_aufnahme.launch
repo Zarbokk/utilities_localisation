@@ -3,8 +3,8 @@
 
     <node name="camera_top" pkg="usb_cam" type="usb_cam_node" output="screen" >
             <param name="video_device" value="/dev/video0" />
-            <param name="image_width" value="1280" />
-            <param name="image_height" value="960" />
+            <param name="image_width" value="960" />
+            <param name="image_height" value="720" />
             <param name="framerate" value="30" />
             <param name="pixel_format" value="yuyv" />
             <param name="camera_frame_id" value="camera_top" />
