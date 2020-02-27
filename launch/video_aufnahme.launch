@@ -1,0 +1,28 @@
+<launch>
+    <arg name="launch_prefix" default=""/>
+
+    <node name="camera_top" pkg="usb_cam" type="usb_cam_node" output="screen" >
+            <param name="video_device" value="/dev/video0" />
+            <param name="image_width" value="1920" />
+            <param name="image_height" value="1080" />
+            <param name="framerate" value="30" />
+            <param name="pixel_format" value="yuyv" />
+            <param name="camera_frame_id" value="camera_top" />
+            <param name="io_method" value="mmap"/>
+    </node>
+        <node pkg="rosbag" type="record" name="rosbag_record_diag"
+            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment "
+    />
+
+    <machine name="video-pi" address="192.168.0.149" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
+
+        <node machine="video-pi" name="tank_camera" pkg="usb_cam" type="usb_cam_node" output="screen" >
+            <param name="video_device" value="/dev/video0" />
+            <param name="image_width" value="1920" />
+            <param name="image_height" value="1080" />
+            <param name="framerate" value="30" />
+            <param name="pixel_format" value="yuyv" />
+            <param name="camera_frame_id" value="tank_camera" />
+            <param name="io_method" value="mmap"/>
+        </node>
+</launch>
