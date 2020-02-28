@@ -9,9 +9,18 @@
             <param name="pixel_format" value="yuyv" />
             <param name="camera_frame_id" value="camera_top" />
             <param name="io_method" value="mmap"/>
+
+
+
+
+
     </node>
         <!--tmp -->
         <node pkg="rosbag" type="record" name="rosbag_record_diag"
-            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /raspicam_node/image/compressed /camera_top/image_raw/compressed"
+            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /raspicam_node/image/compressed /gantry/current_position /camera_top/image_raw/compressed"
     />
+
+
+
+
 </launch>
