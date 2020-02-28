@@ -17,7 +17,7 @@
     <!-- Start Recording everything on the meas-pi and start the video -->
     <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
 
-        <node machine="meas-pi" type="raspicam_node" pkg="raspicam_node" name="raspicam_node" output="screen">
+        <node machine="meas-pi" type="raspicam_node" pkg="raspicam_node" name="meas_cam" output="screen">
             <param name="private_topics" value="true"/>
 
             <param name="camera_frame_id" value="$(arg camera_frame_id)"/>
