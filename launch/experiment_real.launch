@@ -1,5 +1,11 @@
 <launch>
     <arg name="launch_prefix" default="" />
+          <arg name="enable_raw" default="false"/>
+          <arg name="enable_imv" default="false"/>
+          <arg name="camera_id" default="0"/>
+          <arg name="camera_frame_id" default="meas_cam"/>
+          <arg name="camera_name" default="camerav2_1280x960"/>
+
     <!-- Start Mavros-->
     <include file="$(find mavros)/launch/px4.launch"> </include>
     <!-- start localization gazebo-->
@@ -11,7 +17,23 @@
     <!-- Start Recording everything on the meas-pi and start the video -->
     <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
 
+        <node machine="meas-pi" type="raspicam_node" pkg="raspicam_node" name="meas_cam" output="screen">
+            <param name="private_topics" value="true"/>
 
+            <param name="camera_frame_id" value="$(arg camera_frame_id)"/>
+            <param name="enable_raw" value="$(arg enable_raw)"/>
+            <param name="enable_imv" value="$(arg enable_imv)"/>
+            <param name="camera_id" value="$(arg camera_id)"/>
+
+            <param name="camera_info_url" value="package://raspicam_node/camera_info/camerav2_1280x960.yaml"/>
+            <param name="camera_name" value="$(arg camera_name)"/>
+            <param name="width" value="1280"/>
+            <param name="height" value="960"/>
+
+            <param name="framerate" value="25"/>
+        </node>
+
+<!-- Start Recording everything on the meas-pi and start the video
         <node machine="meas-pi" name="meas_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
             <param name="video_device" value="/dev/video0" />
             <param name="image_width" value="1280" />
@@ -21,9 +43,9 @@
             <param name="camera_frame_id" value="meas_cam" />
             <param name="io_method" value="mmap"/>
         </node>
-
+-->
         <node machine="meas-pi" pkg="rosbag" type="record" name="rosbag_record_diag"
-            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /tag_detections_image /estimated_pose /mavros/local_position/pose_NED /mavros/imu/data /pose_boat_NED /tag_detections /infinity /Sphere /meas_cam/image_raw/compressed "
+            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /tag_detections_image /estimated_pose /mavros/local_position/pose_NED /mavros/imu/data /pose_boat_NED /tag_detections /infinity /Sphere /meas_cam/image_raw/compressed"
         />
 
 
