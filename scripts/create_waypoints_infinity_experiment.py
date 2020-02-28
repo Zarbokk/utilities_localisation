@@ -251,10 +251,10 @@ def callback(msg):
         if current_pos_number > N - 1:
             current_pos_number = 0
         current_pos = p[1:4, current_pos_number]
-    if current_pos_number == 24 and not just_changed:  # every time the the 24 waypoint is seen, then parameter can change
+    if current_pos_number == 18 and not just_changed:  # every time the the 24 waypoint is seen, then parameter can change
         change_parameter()
         just_changed = True
-    if current_pos_number == 25:
+    if current_pos_number == 19:
         just_changed = False
     current_waypoint = pathplanning(current_pos, np.asarray([msg.pose.position.x, msg.pose.position.y]))
     rviz = True
@@ -332,13 +332,13 @@ def change_parameter():
         distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
-    if current_parameters == 4 or current_parameters == 7 or current_parameters == 8:
+    if current_parameters == 2 or current_parameters == 7 or current_parameters == 8:
         R = 0.4
         wanted_z_position = 1
         distance_to_point = 0.8
         thrust = 0.15
         do_roll = False
-    if current_parameters == 5:  # WRONG DO 4
+    if current_parameters == 3:  # WRONG DO 4
         R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
