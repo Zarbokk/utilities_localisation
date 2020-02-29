@@ -66,8 +66,6 @@ def myhook():
 
 
 def main():
-
-
     rospy.Subscriber("/mavros/local_position/pose_NED", PoseStamped, callback_px4_pose, queue_size=1)
     rospy.Subscriber("/estimated_pose", PoseStamped, callback_april_tag_ekf, queue_size=1)
     rospy.Subscriber("/tag_detections", AprilTagDetectionArray, callback_tag_detections, queue_size=1)

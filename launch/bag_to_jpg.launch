@@ -1,11 +1,12 @@
 <launch>
   <param name="use_sim_time" value="true" />
-  <node pkg="rosbag" type="play" name="rosbag" required="true" args="--clock /mnt/4ac0aadb-0ea3-4b0a-a77e-e23515df0824/experiment_data_paper/recording_experiment_2020-02-27-15-28-24.bag"/>
+  <node pkg="rosbag" type="play" name="rosbag" required="true" args="--clock /home/mummel/Desktop/loc_paper_bag_files_video/infinity/2020-02-29-00-40-26.bag"/>
 
-  <!--<node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:camera_top/image_raw raw out:=camera_top/image" />-->
+  <!-- test
+  <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:/raspicam_node/image raw out:=raspicam_node/image" />-->
 
   <node name="extract" pkg="image_view" type="extract_images" respawn="false" required="true" output="screen" cwd="ROS_HOME">
-    <remap from="image" to="/camera_top/image"/>
+    <remap from="image" to="/raspicam_node/image"/>
   </node>
 </launch>
 
