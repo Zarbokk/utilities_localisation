@@ -84,7 +84,7 @@ current_parameters = 0
 R = 0.4
 wanted_z_position = 0.5
 distance_to_point = 0.8
-thrust = 0.15
+thrust = 0.5
 carrot = 1
 roll_desired = 0
 p = create_inf()
@@ -265,14 +265,17 @@ def callback(msg):
                                      x=msg.pose.orientation.x,
                                      y=msg.pose.orientation.y,
                                      z=msg.pose.orientation.z)
-    yaw_current, pitch_current, roll_current = rotation_body_frame.inverse.yaw_pitch_roll
 
-    yaw_current = -yaw_current
-    pitch_current = -pitch_current
-    roll_current = -((roll_current + 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi)
+    yaw_current, pitch_current, roll_current = rotation_body_frame.yaw_pitch_roll
+    roll_current=-roll_current
+    #yaw_current = -yaw_current
+    #pitch_current = -pitch_current
+    #roll_current = -((roll_current + 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi)
     yaw_des = np.arctan2((current_waypoint[1] - msg.pose.position.y), (current_waypoint[0] - msg.pose.position.x))
     pitch_des = -np.arctan((wanted_z_position - msg.pose.position.z) / distance_to_point)
     roll_des = 0.0 / 180.0 * np.pi
+
+
     if auftauchen:
         pitch_des = np.pi / 2 - 0.1
         yaw_des = 0
@@ -285,6 +288,7 @@ def callback(msg):
         send_waypoint.thrust = 0
 
     if do_roll and current_pos_number > 85 and current_pos_number < 99:
+
         current_pos_number = 98
         roll_des = roll_current + np.pi / 2
         if roll_des > np.pi:
@@ -312,7 +316,7 @@ def callback(msg):
         pitch_current - pitch_des)
     if abs(yaw_current - yaw_des) > np.pi / 2 or abs(roll_current - roll_des) > np.pi / 2 or abs(
             pitch_current - pitch_des) > np.pi / 2:
-        send_waypoint.thrust = 0
+        send_waypoint.thrust = 0.0
     publisher_waypoint.publish(send_waypoint)
     rate.sleep()
 
@@ -320,23 +324,23 @@ def callback(msg):
 def change_parameter():
     global current_parameters, R, thrust, distance_to_point, wanted_z_position, carrot, do_roll, auftauchen
     current_parameters = current_parameters + 1
-    if current_parameters == 1 or current_parameters == 2 or current_parameters == 3:
+    if current_parameters == 1 or current_parameters == 2 or current_parameters == 2:
         R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.15
+        thrust = 0.5
         do_roll = True
-    if current_parameters == 5 or current_parameters == 8 or current_parameters == 8:
+    if current_parameters == 3 or current_parameters == 3 or current_parameters == 3:
         R = 0.4
         wanted_z_position = 0.7
         distance_to_point = 0.8
-        thrust = 0.15
+        thrust = 0.5
         do_roll = False
-    if current_parameters == 4 or current_parameters == 7 or current_parameters == 8:
+    if current_parameters == 4 or current_parameters == 4 or current_parameters == 4:
         R = 0.4
         wanted_z_position = 1
         distance_to_point = 0.8
-        thrust = 0.15
+        thrust = 0.5
         do_roll = False
     if current_parameters == 5:  # WRONG DO 4
         R = 0.4
