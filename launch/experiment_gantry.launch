@@ -4,6 +4,29 @@
     <include file="$(find mavros)/launch/px4.launch"> </include>
     <!-- start localization gazebo-->
     <include file="$(find mu_auv_localization)/launch/start_localization.launch"> </include>
-    <!-- use rosbag to track data -->
-    <include file="$(find utilities_localisation)/launch/recording_tag_detections_rosbag.launch"> </include>
+
+    <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
+    <!-- camera meas_pi
+    <node machine="meas-pi" type="raspicam_node" pkg="raspicam_node" name="meas_cam" output="screen">
+        <param name="private_topics" value="true"/>
+
+        <param name="camera_frame_id" value="$(arg camera_frame_id)"/>
+        <param name="enable_raw" value="$(arg enable_raw)"/>
+        <param name="enable_imv" value="$(arg enable_imv)"/>
+        <param name="camera_id" value="$(arg camera_id)"/>
+
+        <param name="camera_info_url" value="package://raspicam_node/camera_info/camerav2_1280x960.yaml"/>
+        <param name="camera_name" value="$(arg camera_name)"/>
+        <param name="width" value="1280"/>
+        <param name="height" value="960"/>
+
+        <param name="framerate" value="25"/>
+    </node>
+-->
+    <node machine="meas-pi" pkg="rosbag" type="record" name="rosbag_record_diag"
+        args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /estimated_pose /mavros/local_position/pose_NED /estimated_twist /mavros/imu/data /pose_boat_NED /tag_detections "
+    />
+
+
+
 </launch>
