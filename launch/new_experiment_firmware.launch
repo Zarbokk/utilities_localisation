@@ -6,7 +6,7 @@
     <arg name="camera_frame_id" default="meas_cam"/>
     <arg name="camera_name" default="camerav2_1280x960"/>
     <arg name="image_topic" default="image_raw" />
-    <arg name="ns" />
+    <arg name="ns" value="uuv00"/>
 
     <!-- Start Mavros-->
     <include file="$(find mavros)/launch/px4.launch"> </include>
