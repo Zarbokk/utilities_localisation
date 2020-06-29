@@ -356,7 +356,7 @@ def main():
     rospy.init_node('waypoint_send')
     global rate, R, wanted_z_position, distance_to_point, thrust, carrot, yaw
     rate = rospy.Rate(30)
-    rospy.Subscriber("/mavros/local_position/pose_NED", PoseStamped, callback, queue_size=1)
+    rospy.Subscriber("pose_px4", PoseStamped, callback, queue_size=1)
     rospy.spin()
 
 
