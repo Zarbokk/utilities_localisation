@@ -84,7 +84,7 @@ current_parameters = 0
 R = 0.4
 wanted_z_position = 0.5
 distance_to_point = 0.8
-thrust = 0.2
+thrust = 0.3
 carrot = 1
 roll_desired = 0
 p = create_inf()
@@ -328,19 +328,19 @@ def change_parameter():
         R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.2
+        thrust = 0.3
         do_roll = True
     if current_parameters == 3 or current_parameters == 3 or current_parameters == 3:
         R = 0.4
         wanted_z_position = 0.7
         distance_to_point = 0.8
-        thrust = 0.2
+        thrust = 0.3
         do_roll = False
     if current_parameters == 4 or current_parameters == 4 or current_parameters == 4:
         R = 0.4
         wanted_z_position = 1
         distance_to_point = 0.8
-        thrust = 0.2
+        thrust = 0.3
         do_roll = False
     if current_parameters == 5:  # WRONG DO 4
         R = 0.4
