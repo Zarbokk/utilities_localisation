@@ -11,11 +11,11 @@ from mavros_msgs.msg import PositionTarget, AttitudeTarget
 # from numpy import genfromtxt
 # import os
 # import matplotlib.pyplot as plt
-import csv
+#import csv
 
 # publisher_waypoint = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
 # publisher_waypoint = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget, queue_size=1)
-publisher_waypoint = rospy.Publisher('mavros/setpoint_raw/attitude', AttitudeTarget, queue_size=1)
+publisher_waypoint = rospy.Publisher('uuv00/mavros/setpoint_raw/attitude', AttitudeTarget, queue_size=1)
 publisher_marker = rospy.Publisher('/infinity', MarkerArray, queue_size=1)
 current_pos_number = 0
 N = 100
@@ -84,7 +84,7 @@ current_parameters = 0
 R = 0.4
 wanted_z_position = 0.5
 distance_to_point = 0.8
-thrust = 0.5
+thrust = 0.3
 carrot = 1
 roll_desired = 0
 p = create_inf()
@@ -328,19 +328,19 @@ def change_parameter():
         R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.5
+        thrust = 0.3
         do_roll = True
     if current_parameters == 3 or current_parameters == 3 or current_parameters == 3:
         R = 0.4
         wanted_z_position = 0.7
         distance_to_point = 0.8
-        thrust = 0.5
+        thrust = 0.3
         do_roll = False
     if current_parameters == 4 or current_parameters == 4 or current_parameters == 4:
         R = 0.4
         wanted_z_position = 1
         distance_to_point = 0.8
-        thrust = 0.5
+        thrust = 0.3
         do_roll = False
     if current_parameters == 5:  # WRONG DO 4
         R = 0.4
@@ -356,7 +356,7 @@ def main():
     rospy.init_node('waypoint_send')
     global rate, R, wanted_z_position, distance_to_point, thrust, carrot, yaw
     rate = rospy.Rate(30)
-    rospy.Subscriber("/mavros/local_position/pose_NED", PoseStamped, callback, queue_size=1)
+    rospy.Subscriber("/uuv00/pose_ned", PoseStamped, callback, queue_size=1)
     rospy.spin()
 
 
