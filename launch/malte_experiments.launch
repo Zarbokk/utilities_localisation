@@ -21,8 +21,12 @@
         <param name="image_height" value="480" />
         <param name="framerate" value="10" />
         <param name="pixel_format" value="yuyv" />
+        <param name="sharpness" value="22"/>
         <param name="camera_frame_id" value="usb_cam" />
+        <param name="brightness" value="15"/>
         <param name="io_method" value="mmap"/>
+        <param name="contrast" value="80"/>
+
      </node>
      <node name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg ns)">
         <remap from="image_raw" to="localization_cam/image_raw"/>
