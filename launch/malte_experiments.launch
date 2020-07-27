@@ -44,8 +44,8 @@
         <param name="calibration" type="str" value="water_tank" />
         <remap from="tag_detections" to="$(arg ns)/tag_detections"/>
       </node>
-    <!-- start waypoints
-    <node pkg="utilities_localisation" type="create_waypoints_infinity_experiment.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
--->
+    <!-- start waypoints-->
+    <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
+
 
 </launch>
