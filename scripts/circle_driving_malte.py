@@ -38,7 +38,22 @@ def create_circle(dist_y=1, dist_x=1.9, r=0.6, N=100):
     waypoints_x = np.append(waypoints_x, x)
     waypoints_y = np.append(waypoints_y, y)
 
-    return (np.asarray([range(0, N), waypoints_x, waypoints_y]))
+    angle = np.zeros(N)
+    for i in range(N):
+        left_point = i - 1
+        right_point = i + 1
+        if i == 0:
+            left_point = N - 1
+            right_point = i + 1
+        if i == N - 1:
+            left_point = i - 1
+            right_point = 0
+        angle_trajectory = np.arctan2((-waypoints_y[left_point] + waypoints_y[right_point]),
+                                      (-waypoints_x[left_point] + waypoints_x[right_point]))
+        angle[i] = np.tan(angle_trajectory)
+        # print(angle_trajectory)
+
+    return (np.asarray([range(0, N), waypoints_x, waypoints_y, angle]))
 
 
 auftauchen = False
