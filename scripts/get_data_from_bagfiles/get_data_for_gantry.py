@@ -60,7 +60,7 @@ def callback_tag_detections(msg):
 def myhook():
     global x_gantry_pos, y_gantry_pos, z_gantry_pos, timestamp_gantry_pos, x_april_ekf_pos, y_april_ekf_pos, z_april_ekf_pos, timestamp_april_ekf_pos, apriltag_number, timestamp_april_tags_number
     print("saving")
-    versuch = "2"
+    versuch = "0"
     np.savetxt("gantry_test_" + versuch + "_ekf.csv",
                np.transpose(
                    [np.asarray(x_april_ekf_pos, dtype=np.float32), np.asarray(y_april_ekf_pos, dtype=np.float32),

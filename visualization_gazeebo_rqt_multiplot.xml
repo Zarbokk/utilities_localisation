@@ -26,30 +26,30 @@
                         <curve_0>
                             <axes>
                                 <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>1</field_type>
-                                    <scale>
-                                        <absolute_maximum>1</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>1</type>
-                                    </scale>
-                                    <topic>/mavros/imu/data</topic>
-                                    <type>sensor_msgs/Imu</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>angular_velocity/x</field>
+                                    <field>pose/position/x</field>
                                     <field_type>0</field_type>
                                     <scale>
-                                        <absolute_maximum>1</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
+                                        <absolute_maximum>4</absolute_maximum>
+                                        <absolute_minimum>-0.5</absolute_minimum>
                                         <relative_maximum>0</relative_maximum>
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>1</type>
                                     </scale>
-                                    <topic>/mavros/imu/data</topic>
-                                    <type>sensor_msgs/Imu</type>
+                                    <topic>/estimated_pose</topic>
+                                    <type>geometry_msgs/PoseStamped</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>pose/position/y</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>2.5</absolute_maximum>
+                                        <absolute_minimum>-0.5</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>1</type>
+                                    </scale>
+                                    <topic>/estimated_pose</topic>
+                                    <type>geometry_msgs/PoseStamped</type>
                                 </y_axis>
                             </axes>
                             <color>
@@ -69,7 +69,7 @@
                                 <steps_invert>false</steps_invert>
                                 <sticks_baseline>0</sticks_baseline>
                                 <sticks_orientation>2</sticks_orientation>
-                                <type>3</type>
+                                <type>0</type>
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>error</title>
