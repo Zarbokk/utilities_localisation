@@ -26,7 +26,7 @@ current_path = None
 # set_mode_srv = rospy.ServiceProxy('mavros/set_mode', SetMode)
 # res = set_mode_srv(0, " OFFBOARD")
 
-def create_circle(dist_y=0.6, dist_x=1.9, r=0.6, N=100):
+def create_circle(dist_y=0.6, dist_x=1.6, r=0.6, N=100):
 
     waypoints_x = np.zeros(0)
     waypoints_y = np.zeros(0)

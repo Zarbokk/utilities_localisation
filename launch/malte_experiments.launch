@@ -48,4 +48,11 @@
     <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
 
 
+
+
+ <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
+        <node machine="meas-pi" pkg="rosbag" type="record" name="rosbag_record_diag"
+            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /tag_detections /estimated_pose /pose_px4 /mavros/imu/data /mavros/rc/out"
+        />
+
 </launch>
