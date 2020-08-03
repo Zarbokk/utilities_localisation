@@ -30,7 +30,7 @@
         <arg name="log_output" value="$(arg log_output)" />
         <arg name="fcu_protocol" value="$(arg fcu_protocol)" />
         <arg name="respawn_mavros" default="$(arg respawn_mavros)" />
-
+    </include>
     <!-- Mavros to ROS Remapping Koordinate System-->
     <include file="$(find hippocampus_common)/launch/tf_publisher.launch"></include>
     <include file="$(find hippocampus_common)/launch/tf_pose_ros_to_px4.launch"></include>
