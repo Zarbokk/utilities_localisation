@@ -9,8 +9,28 @@
     <arg name="image_topic" default="image_raw" />
     <arg name="ns" value="uuv00"/>
 
+
+
     <!-- Start Mavros-->
-    <include file="$(find mavros)/launch/px4.launch"> </include>
+    <arg name="fcu_url" default="/dev/ttyS0:921600" />
+    <arg name="gcs_url" default="" />
+    <arg name="tgt_system" default="1" />
+    <arg name="tgt_component" default="1" />
+    <arg name="log_output" default="screen" />
+    <arg name="fcu_protocol" default="v2.0" />
+    <arg name="respawn_mavros" default="false" />
+    <node name="test" pkg="mu_auv_localization" type="give_rights.sh" />
+    <include file="$(find mavros)/launch/node.launch">
+        <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
+        <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
+        <arg name="fcu_url" value="$(arg fcu_url)" />
+        <arg name="gcs_url" value="$(arg gcs_url)" />
+        <arg name="tgt_system" value="$(arg tgt_system)" />
+        <arg name="tgt_component" value="$(arg tgt_component)" />
+        <arg name="log_output" value="$(arg log_output)" />
+        <arg name="fcu_protocol" value="$(arg fcu_protocol)" />
+        <arg name="respawn_mavros" default="$(arg respawn_mavros)" />
+
     <!-- Mavros to ROS Remapping Koordinate System-->
     <include file="$(find hippocampus_common)/launch/tf_publisher.launch"></include>
     <include file="$(find hippocampus_common)/launch/tf_pose_ros_to_px4.launch"></include>
