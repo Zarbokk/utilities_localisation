@@ -20,7 +20,7 @@
     <arg name="fcu_protocol" default="v2.0" />
     <arg name="respawn_mavros" default="false" />
     <node name="test" pkg="mu_auv_localization" type="give_rights.sh" />
-    <include file="$(find mavros)/launch/node.launch">
+    <include file="$(find mavros)/launch/node.launch" ns="$(arg ns)">
         <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
         <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
         <arg name="fcu_url" value="$(arg fcu_url)" />
