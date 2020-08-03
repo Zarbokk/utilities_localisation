@@ -32,8 +32,8 @@
         <arg name="respawn_mavros" default="$(arg respawn_mavros)" />
     </include>
     <!-- Mavros to ROS Remapping Koordinate System-->
-    <include file="$(find hippocampus_common)/launch/tf_publisher.launch"></include>
-    <include file="$(find hippocampus_common)/launch/tf_pose_ros_to_px4.launch"></include>
+    <include file="$(find hippocampus_common)/launch/tf_publisher.launch" ns="$(arg ns)"></include>
+    <include file="$(find hippocampus_common)/launch/tf_pose_ros_to_px4.launch" ns="$(arg ns)"></include>
 
      <node name="localization_cam" pkg="usb_cam" type="usb_cam_node" output="screen" ns="$(arg ns)" >
         <param name="video_device" value="/dev/video0" />
@@ -64,7 +64,7 @@
       </node>
 
       <!-- Start EKF Localization -->
-      <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen">
+      <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen" ns="$(arg ns)">
         <param name="calibration" type="str" value="water_tank" />
         <remap from="tag_detections" to="$(arg ns)/tag_detections"/>
       </node>
