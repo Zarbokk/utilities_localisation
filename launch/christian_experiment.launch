@@ -43,7 +43,7 @@
         <param name="pixel_format" value="yuyv" />
         <param name="sharpness" value="22"/>
         <param name="camera_frame_id" value="usb_cam" />
-        <param name="brightness" value="32"/>
+        <param name="brightness" value="62"/>
         <param name="io_method" value="mmap"/>
         <param name="contrast" value="32"/>
 
