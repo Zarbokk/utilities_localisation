@@ -66,7 +66,6 @@
       <!-- Start EKF Localization -->
       <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen" ns="$(arg ns)">
         <param name="calibration" type="str" value="water_tank" />
-        <remap from="tag_detections" to="$(arg ns)/tag_detections"/>
       </node>
     <!-- start waypoints-->
     <include file="$(find hippocampus_test)/launch/ratecontrol_test.launch"></include>
