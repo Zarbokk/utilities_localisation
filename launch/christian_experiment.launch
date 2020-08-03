@@ -70,4 +70,6 @@
     <!-- start waypoints-->
     <include file="$(find hippocampus_test)/launch/ratecontrol_test.launch"></include>
 
+    <node pkg="hippocampus_test" type="BodyRateController.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
+
 </launch>
