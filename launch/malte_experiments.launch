@@ -26,8 +26,8 @@
         <param name="brightness" value="32"/>
         <param name="io_method" value="mmap"/>
         <param name="contrast" value="32"/>
-
      </node>
+
      <node name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg ns)">
         <remap from="image_raw" to="localization_cam/image_raw"/>
         <remap from="camera_info" to="localization_cam/camera_info"/>

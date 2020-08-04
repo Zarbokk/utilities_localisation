@@ -67,9 +67,9 @@
       <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen" ns="$(arg ns)">
         <param name="calibration" type="str" value="water_tank" />
       </node>
+    <!-- start waypoints-->
+    <include file="$(find hippocampus_test)/launch/positionthrust_test.launch"></include>
 
-        <!-- start waypoints-->
-    <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
-
+    <node pkg="hippocampus_test" type="BodyRateController.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
 
 </launch>
