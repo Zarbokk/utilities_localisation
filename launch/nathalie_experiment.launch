@@ -68,6 +68,6 @@
         <param name="calibration" type="str" value="water_tank" />
       </node>
     <!-- start waypoints-->
-    <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns) ></node>
+    <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>
 
 </launch>
