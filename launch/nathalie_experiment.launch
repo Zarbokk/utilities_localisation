@@ -13,7 +13,7 @@
 
     <!-- Start Mavros-->
     <arg name="fcu_url" default="/dev/ttyS0:921600" />
-    <arg name="gcs_url" default="udp://@192.168.0.139:14550" />
+    <arg name="gcs_url" default="udp://@127.0.0.1:14550" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
     <arg name="log_output" default="screen" />
