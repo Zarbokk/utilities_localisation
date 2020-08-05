@@ -31,6 +31,7 @@
         <arg name="fcu_protocol" value="$(arg fcu_protocol)" />
         <arg name="respawn_mavros" default="$(arg respawn_mavros)" />
     </include>
+
     <!-- Mavros to ROS Remapping Koordinate System-->
     <include file="$(find hippocampus_common)/launch/tf_publisher.launch" ns="$(arg ns)"></include>
     <include file="$(find hippocampus_common)/launch/tf_pose_ros_to_px4.launch" ns="$(arg ns)"></include>
@@ -67,12 +68,14 @@
       <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen" ns="$(arg ns)">
         <param name="calibration" type="str" value="water_tank" />
       </node>
-    <!-- start waypoints-->
-    <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>
-<!-- start waypoints
- <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
-        <node machine="meas-pi" pkg="rosbag" type="record" name="rosbag_record_diag"
-            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /uuv00/tag_detections_image /uuv00/tag_detections /uuv00/estimated_pose /uuv00/pose_px4 /uuv00/mavros/imu/data /uuv00/mavros/rc/out"
-        />
--->
+
+      <!-- start waypoints-->
+        <!-- <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>-->
+
+    <!-- start logging -->
+    <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
+    <node machine="meas-pi" pkg="rosbag" type="record" name="rosbag_record_diag"
+        args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /uuv00/tag_detections_image /uuv00/tag_detections /uuv00/estimated_pose /uuv00/pose_px4 /uuv00/mavros/imu/data /uuv00/mavros/rc/out"
+    />
+
 </launch>
