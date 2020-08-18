@@ -71,8 +71,9 @@
     <include file="$(find hippocampus_test)/launch/ratecontrol_test.launch"></include>
 -->
     <!-- start waypoints -->
-    <include file="$(find hippocampus_test)/launch/trajectory_generation.launch"></include>
+    <include file="$(find hippocampus_test)/launch/trajectory_generation_2.launch"></include>
 
+    <node pkg="hippocampus_test" type="BodyRateController.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ></node>
 
     <!-- start waypoints
     <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
