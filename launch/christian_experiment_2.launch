@@ -1,0 +1,83 @@
+<launch>
+    <arg name="launch_prefix" default="" />
+    <arg name="enable_raw" default="false"/>
+    <arg name="enable_imv" default="false"/>
+    <arg name="camera_id" default="0"/>
+    <arg name="camera_frame_id" default="meas_cam"/>
+    <arg name="camera_frame" default="camera_frame" />
+    <arg name="camera_name" default="localization_cam"/>
+    <arg name="image_topic" default="image_raw" />
+    <arg name="ns" value="uuv00"/>
+
+
+
+    <!-- Start Mavros-->
+    <arg name="fcu_url" default="/dev/ttyS0:921600" />
+    <arg name="gcs_url" default="" />
+    <arg name="tgt_system" default="1" />
+    <arg name="tgt_component" default="1" />
+    <arg name="log_output" default="screen" />
+    <arg name="fcu_protocol" default="v2.0" />
+    <arg name="respawn_mavros" default="false" />
+    <node name="test" pkg="mu_auv_localization" type="give_rights.sh" />
+    <include file="$(find mavros)/launch/node.launch" ns="$(arg ns)">
+        <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml" />
+        <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
+        <arg name="fcu_url" value="$(arg fcu_url)" />
+        <arg name="gcs_url" value="$(arg gcs_url)" />
+        <arg name="tgt_system" value="$(arg tgt_system)" />
+        <arg name="tgt_component" value="$(arg tgt_component)" />
+        <arg name="log_output" value="$(arg log_output)" />
+        <arg name="fcu_protocol" value="$(arg fcu_protocol)" />
+        <arg name="respawn_mavros" default="$(arg respawn_mavros)" />
+    </include>
+    <!-- Mavros to ROS Remapping Koordinate System-->
+    <include file="$(find hippocampus_common)/launch/tf_publisher.launch" ns="$(arg ns)"></include>
+    <include file="$(find hippocampus_common)/launch/tf_pose_ros_to_px4.launch" ns="$(arg ns)"></include>
+
+     <node name="localization_cam" pkg="usb_cam" type="usb_cam_node" output="screen" ns="$(arg ns)" >
+        <param name="video_device" value="/dev/video0" />
+        <param name="image_width" value="640" />
+        <param name="image_height" value="480" />
+        <param name="framerate" value="10" />
+        <param name="pixel_format" value="yuyv" />
+        <param name="sharpness" value="22"/>
+        <param name="camera_frame_id" value="usb_cam" />
+        <param name="brightness" value="40"/>
+        <param name="io_method" value="mmap"/>
+        <param name="contrast" value="32"/>
+
+     </node>
+     <node name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg ns)">
+        <remap from="image_raw" to="localization_cam/image_raw"/>
+        <remap from="camera_info" to="localization_cam/camera_info"/>
+     </node>
+
+    <!-- start localization gazebo-->
+      <!-- Apriltag algorithm -->
+      <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_node" ns="$(arg ns)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+        <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml" />
+        <rosparam command="load" file="$(find mu_auv_localization)/config/tags_standalone.yaml" />
+        <remap from="camera_info" to="localization_cam/camera_info"/>
+        <param name="camera_frame" type="str" value="$(arg ns)/$(arg camera_frame)" />
+        <param name="publish_tag_detections_image" type="bool" value="true" />
+      </node>
+
+      <!-- Start EKF Localization -->
+      <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen" ns="$(arg ns)">
+        <param name="calibration" type="str" value="water_tank" />
+      </node>
+    <!-- start waypoints
+    <include file="$(find hippocampus_test)/launch/ratecontrol_test.launch"></include>
+-->
+    <!-- start waypoints -->
+    <include file="$(find hippocampus_test)/launch/trajectory_generation.launch"></include>
+
+
+    <!-- start waypoints
+    <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
+    <node machine="meas-pi" pkg="rosbag" type="record" name="rosbag_record_diag"
+        args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /uuv00/tag_detections_image /uuv00/tag_detections /uuv00/estimated_pose /uuv00/pose_px4 /uuv00/mavros/imu/data /uuv00/mavros/rc/out /uuv00/mavros/local_position/velocity_body"
+    />
+    -->
+</launch>
