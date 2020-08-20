@@ -1,5 +1,5 @@
 <launch>
-  <arg name="serial_no"           default="947122070852"/>
+  <arg name="serial_no"           default=""/>
   <arg name="usb_port_id"         default=""/>
   <arg name="device_type"         default=""/>
   <arg name="json_file_path"      default="$(find utilities_localisation)/scriptstmp_settings_depth.json"/>
