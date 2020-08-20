@@ -2,7 +2,7 @@
   <arg name="serial_no"           default=""/>
   <arg name="usb_port_id"         default=""/>
   <arg name="device_type"         default=""/>
-  <arg name="json_file_path"      default="$(find utilities_localisation)/scriptstmp_settings_depth.json"/>
+  <arg name="json_file_path"      default="$(find utilities_localisation)/scripts/tmp_settings_depth.json"/>
   <arg name="camera"              default="d435i"/>
   <arg name="tf_prefix"           default="$(arg camera)"/>
   <arg name="external_manager"    default="false"/>
