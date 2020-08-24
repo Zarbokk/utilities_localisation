@@ -30,12 +30,12 @@
     <include file="$(find hippocampus_common)/launch/tf_publisher.launch" ns="$(arg ns)"></include>
     <include file="$(find hippocampus_common)/launch/tf_pose_ros_to_px4.launch" ns="$(arg ns)"></include>
       <!-- Start EKF Localization -->
-      <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen" ns="$(arg ns)">
+    <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen" ns="$(arg ns)">
         <param name="calibration" type="str" value="water_tank" />
-      </node>
+    </node>
 
       <!-- start waypoints-->
-        <!-- <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>-->
+    <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>
 
     <!-- start logging -->
     <machine name="tim-loc-pi" address="10.66.66.2" env-loader="~/setup.sh" user="ubuntu" password="hippocampus"/>
