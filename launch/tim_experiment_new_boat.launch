@@ -21,10 +21,7 @@
 
 
 
-     <node name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg ns)">
-        <remap from="image_raw" to="localization_cam/image_raw"/>
-        <remap from="camera_info" to="localization_cam/camera_info"/>
-     </node>
+
 
     <!-- start localization gazebo-->
       <!-- Apriltag algorithm -->
@@ -77,6 +74,10 @@
             <param name="contrast" value="32"/>
         </node>
 
+        <node  machine="tim-loc-pi" name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg ns)">
+            <remap from="image_raw" to="localization_cam/image_raw"/>
+            <remap from="camera_info" to="localization_cam/camera_info"/>
+        </node>
 
 
 
