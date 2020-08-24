@@ -35,7 +35,7 @@
     </node>
 
       <!-- start waypoints-->
-    <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>
+    <node pkg="utilities_localisation" type="create_waypoints_infinity_experiment.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>
 
     <!-- start logging -->
     <machine name="tim-loc-pi" address="10.66.66.2" env-loader="~/setup.sh" user="ubuntu" password="hippocampus"/>
