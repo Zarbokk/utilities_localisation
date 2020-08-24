@@ -47,7 +47,7 @@
         <!-- <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>-->
 
     <!-- start logging -->
-    <machine name="tim-loc-pi" address="10.66.66.2" env-loader="~/setup.sh" user="pi" password="raspberry"/>
+    <machine name="tim-loc-pi" address="10.66.66.2" env-loader="~/setup.sh" user="ubuntu" password="hippocampus"/>
         <!-- Start Mavros-->
 
         <node machine="tim-loc-pi" name="test" pkg="mu_auv_localization" type="give_rights.sh" />
