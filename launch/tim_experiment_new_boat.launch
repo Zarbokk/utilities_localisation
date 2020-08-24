@@ -52,7 +52,7 @@
 
         <node machine="tim-loc-pi" name="test" pkg="mu_auv_localization" type="give_rights.sh" />
 
-        <node pkg="mavros" type="mavros_node" name="mavros" required="$(eval not respawn_mavros)" clear_params="true" output="$(arg log_output)" respawn="$(arg respawn_mavros)" ns="$(arg ns)">
+        <node machine="tim-loc-pi" pkg="mavros" type="mavros_node" name="mavros" required="$(eval not respawn_mavros)" clear_params="true" output="$(arg log_output)" respawn="$(arg respawn_mavros)" ns="$(arg ns)">
             <param name="fcu_url" value="$(arg fcu_url)" />
             <param name="gcs_url" value="$(arg gcs_url)" />
             <param name="target_system_id" value="$(arg tgt_system)" />
