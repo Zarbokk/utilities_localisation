@@ -8,7 +8,7 @@
     <arg name="camera_name" default="localization_cam"/>
     <arg name="image_topic" default="image_raw" />
     <arg name="ns" value="uuv00"/>
-    <arg name="fcu_url" default="/dev/ttyS0:921600" />
+    <arg name="fcu_url" default="/dev/ttyUSB0:921600" />
     <arg name="gcs_url" default="udp://@127.0.0.1:14550" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
@@ -41,7 +41,7 @@
     <machine name="tim-loc-pi" address="10.66.66.2" env-loader="~/setup.sh" user="ubuntu" password="hippocampus"/>
         <!-- Start Mavros-->
 
-        <node machine="tim-loc-pi" name="test" pkg="mu_auv_localization" type="give_rights.sh" />
+        <node machine="tim-loc-pi" name="test" pkg="utilities_localisation" type="give_rights.sh" />
 
         <node machine="tim-loc-pi" pkg="mavros" type="mavros_node" name="mavros" required="$(eval not respawn_mavros)" clear_params="true" output="$(arg log_output)" respawn="$(arg respawn_mavros)" ns="$(arg ns)">
             <param name="fcu_url" value="$(arg fcu_url)" />
