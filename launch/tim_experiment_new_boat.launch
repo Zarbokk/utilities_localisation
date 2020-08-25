@@ -8,7 +8,7 @@
     <arg name="camera_name" default="localization_cam"/>
     <arg name="image_topic" default="image_raw" />
     <arg name="ns" value="uuv00"/>
-    <arg name="fcu_url" default="/dev/ttyUSB0:921600" />
+    <arg name="fcu_url" default="/dev/ttyS0:921600" />
     <arg name="gcs_url" default="udp://@127.0.0.1:14550" />
     <arg name="tgt_system" default="1" />
     <arg name="tgt_component" default="1" />
