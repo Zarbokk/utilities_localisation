@@ -32,6 +32,7 @@
       <!-- Start EKF Localization -->
     <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen" ns="$(arg ns)">
         <param name="calibration" type="str" value="water_tank" />
+        <param name="cam_reserved" type="bool" value="true" />
     </node>
 
       <!-- start waypoints-->
