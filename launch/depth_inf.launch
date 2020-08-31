@@ -1,0 +1,270 @@
+<launch>
+    <arg name="launch_prefix" default="" />
+    <arg name="enable_raw" default="false"/>
+    <arg name="enable_imv" default="false"/>
+    <arg name="camera_id" default="0"/>
+    <arg name="camera_frame_id" default="meas_cam"/>
+    <arg name="camera_frame" default="camera_frame" />
+    <arg name="camera_name" default="localization_cam"/>
+    <arg name="image_topic" default="image_raw" />
+    <arg name="ns" value="uuv00"/>
+    <arg name="fcu_url" default="/dev/ttyAMA1:921600" />
+    <arg name="gcs_url" default="udp://@127.0.0.1:14550" />
+    <arg name="tgt_system" default="1" />
+    <arg name="tgt_component" default="1" />
+    <arg name="log_output" default="screen" />
+    <arg name="fcu_protocol" default="v2.0" />
+    <arg name="respawn_mavros" default="false" />
+    <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml"/>
+    <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
+
+
+    <!-- start localization gazebo-->
+      <!-- Apriltag algorithm -->
+
+    <!-- Mavros to ROS Remapping Koordinate System-->
+    <include file="$(find hippocampus_common)/launch/tf_publisher.launch" ns="$(arg ns)"></include>
+    <include file="$(find hippocampus_common)/launch/tf_pose_ros_to_px4.launch" ns="$(arg ns)"></include>
+      <!-- Start EKF Localization -->
+    <node pkg="mu_auv_localization" type="ekf_node" name="ekf_node" clear_params="true" output="screen" ns="$(arg ns)">
+        <param name="calibration" type="str" value="water_tank" />
+        <param name="cam_reserved" type="bool" value="true" />
+    </node>
+
+      <!-- start waypoints-->
+    <node pkg="utilities_localisation" type="create_waypoints_infinity_experiment.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>
+
+    <!-- start logging -->
+    <machine name="tim-loc-pi" address="10.66.66.2" env-loader="~/setup.sh" user="ubuntu" password="hippocampus"/>
+        <!-- Start Mavros-->
+
+        <node machine="tim-loc-pi" name="test" pkg="utilities_localisation" type="give_rights.sh" />
+
+        <node machine="tim-loc-pi" pkg="mavros" type="mavros_node" name="mavros" required="$(eval not respawn_mavros)" clear_params="true" output="$(arg log_output)" respawn="$(arg respawn_mavros)" ns="$(arg ns)">
+            <param name="fcu_url" value="$(arg fcu_url)" />
+            <param name="gcs_url" value="$(arg gcs_url)" />
+            <param name="target_system_id" value="$(arg tgt_system)" />
+            <param name="target_component_id" value="$(arg tgt_component)" />
+            <param name="fcu_protocol" value="$(arg fcu_protocol)" />
+
+            <!-- load blacklist, config -->
+            <rosparam command="load" file="$(arg pluginlists_yaml)" />
+            <rosparam command="load" file="$(arg config_yaml)" />
+	    </node>
+
+        <node machine="tim-loc-pi" name="localization_cam" pkg="usb_cam" type="usb_cam_node" output="screen" ns="$(arg ns)" >
+            <param name="video_device" value="/dev/video0" />
+            <param name="image_width" value="640" />
+            <param name="image_height" value="480" />
+            <param name="framerate" value="10" />
+            <param name="pixel_format" value="yuyv" />
+            <param name="sharpness" value="22"/>
+            <param name="camera_frame_id" value="usb_cam" />
+            <param name="brightness" value="40"/>
+            <param name="io_method" value="mmap"/>
+            <param name="contrast" value="32"/>
+        </node>
+
+        <node  machine="tim-loc-pi" name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg ns)">
+            <remap from="image_raw" to="localization_cam/image_raw"/>
+            <remap from="camera_info" to="localization_cam/camera_info"/>
+        </node>
+
+        <node machine="tim-loc-pi" pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_node" ns="$(arg ns)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)">
+            <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml" />
+            <rosparam command="load" file="$(find mu_auv_localization)/config/tags_standalone.yaml" />
+            <remap from="camera_info" to="localization_cam/camera_info"/>
+            <param name="camera_frame" type="str" value="$(arg ns)/$(arg camera_frame)" />
+            <param name="publish_tag_detections_image" type="bool" value="true" />
+        </node>
+
+        <!-- calc everything depth related -->
+        <node machine="tim-loc-pi" name="depth_rectification" pkg="net_detection_and_control" type="example" />
+
+        <arg name="serial_no"           default="947122070852"/>
+        <arg name="usb_port_id"         default=""/>
+        <arg name="device_type"         default=""/>
+        <arg name="json_file_path"      default="$(find net_detection_and_control)/all_non_ros_things/einstellungen_camera/tmp_settings_depth.json"/>
+        <arg name="camera"              default="d435i"/>
+        <arg name="tf_prefix"           default="$(arg camera)"/>
+        <arg name="external_manager"    default="false"/>
+        <arg name="manager"             default="realsense2_camera_manager"/>
+
+        <arg name="fisheye_width"       default="640"/>
+        <arg name="fisheye_height"      default="480"/>
+        <arg name="enable_fisheye"      default="false"/>
+
+        <arg name="depth_width"         default="640"/>
+        <arg name="depth_height"        default="480"/>
+        <arg name="enable_depth"        default="true"/>
+
+        <arg name="infra_width"        default="640"/>
+        <arg name="infra_height"       default="480"/>
+        <arg name="enable_infra1"       default="false"/>
+        <arg name="enable_infra2"       default="false"/>
+
+        <arg name="color_width"         default="640"/>
+        <arg name="color_height"        default="480"/>
+        <arg name="enable_color"        default="true"/>
+
+        <arg name="fisheye_fps"         default="15"/>
+        <arg name="depth_fps"           default="15"/>
+        <arg name="infra_fps"           default="15"/>
+        <arg name="color_fps"           default="15"/>
+        <arg name="gyro_fps"            default="400"/>
+        <arg name="accel_fps"           default="250"/>
+        <arg name="enable_gyro"         default="true"/>
+        <arg name="enable_accel"        default="false"/>
+
+        <arg name="enable_pointcloud"         default="true"/>
+        <arg name="pointcloud_texture_stream" default="RS2_STREAM_COLOR"/>
+        <arg name="pointcloud_texture_index"  default="0"/>
+
+        <arg name="enable_sync"               default="true"/>
+        <arg name="align_depth"               default="false"/>
+
+        <arg name="publish_tf"                default="true"/>
+        <arg name="tf_publish_rate"           default="0"/>
+
+        <arg name="filters"                   default="decimation,spatial"/>
+        <arg name="clip_distance"             default="-2"/>
+        <arg name="linear_accel_cov"          default="0.01"/>
+        <arg name="initial_reset"             default="true"/>
+        <arg name="unite_imu_method"          default=""/>
+        <arg name="topic_odom_in"             default="odom_in"/>
+        <arg name="calib_odom_file"           default=""/>
+        <arg name="publish_odom_tf"           default="true"/>
+        <arg name="allow_no_texture_points"   default="true"/>
+        <arg name="base_frame_id"             default="$(arg tf_prefix)_link"/>
+        <arg name="depth_frame_id"            default="$(arg tf_prefix)_depth_frame"/>
+        <arg name="infra1_frame_id"           default="$(arg tf_prefix)_infra1_frame"/>
+        <arg name="infra2_frame_id"           default="$(arg tf_prefix)_infra2_frame"/>
+        <arg name="color_frame_id"            default="$(arg tf_prefix)_color_frame"/>
+        <arg name="fisheye_frame_id"          default="$(arg tf_prefix)_fisheye_frame"/>
+        <arg name="fisheye1_frame_id"         default="$(arg tf_prefix)_fisheye1_frame"/>
+        <arg name="fisheye2_frame_id"         default="$(arg tf_prefix)_fisheye2_frame"/>
+        <arg name="accel_frame_id"            default="$(arg tf_prefix)_accel_frame"/>
+        <arg name="gyro_frame_id"             default="$(arg tf_prefix)_gyro_frame"/>
+        <arg name="pose_frame_id"             default="$(arg tf_prefix)_pose_frame"/>
+
+        <arg name="depth_optical_frame_id"    default="$(arg tf_prefix)_depth_optical_frame"/>
+        <arg name="infra1_optical_frame_id"   default="$(arg tf_prefix)_infra1_optical_frame"/>
+        <arg name="infra2_optical_frame_id"   default="$(arg tf_prefix)_infra2_optical_frame"/>
+        <arg name="color_optical_frame_id"    default="$(arg tf_prefix)_color_optical_frame"/>
+        <arg name="fisheye_optical_frame_id"  default="$(arg tf_prefix)_fisheye_optical_frame"/>
+        <arg name="fisheye1_optical_frame_id" default="$(arg tf_prefix)_fisheye1_optical_frame"/>
+        <arg name="fisheye2_optical_frame_id" default="$(arg tf_prefix)_fisheye2_optical_frame"/>
+        <arg name="accel_optical_frame_id"    default="$(arg tf_prefix)_accel_optical_frame"/>
+        <arg name="gyro_optical_frame_id"     default="$(arg tf_prefix)_gyro_optical_frame"/>
+        <arg name="imu_optical_frame_id"      default="$(arg tf_prefix)_imu_optical_frame"/>
+        <arg name="pose_optical_frame_id"     default="$(arg tf_prefix)_pose_optical_frame"/>
+
+        <arg name="aligned_depth_to_color_frame_id"    default="$(arg tf_prefix)_aligned_depth_to_color_frame"/>
+        <arg name="aligned_depth_to_infra1_frame_id"   default="$(arg tf_prefix)_aligned_depth_to_infra1_frame"/>
+        <arg name="aligned_depth_to_infra2_frame_id"   default="$(arg tf_prefix)_aligned_depth_to_infra2_frame"/>
+        <arg name="aligned_depth_to_fisheye_frame_id"  default="$(arg tf_prefix)_aligned_depth_to_fisheye_frame"/>
+        <arg name="aligned_depth_to_fisheye1_frame_id" default="$(arg tf_prefix)_aligned_depth_to_fisheye1_frame"/>
+        <arg name="aligned_depth_to_fisheye2_frame_id" default="$(arg tf_prefix)_aligned_depth_to_fisheye2_frame"/>
+
+
+        <arg name="odom_frame_id"            default="$(arg tf_prefix)_odom_frame"/>
+
+
+        <group ns="$(arg camera)">
+          <node unless="$(arg external_manager)" pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" output="screen" required="$(arg required)"/>
+          <node pkg="nodelet" type="nodelet" name="realsense2_camera" args="load realsense2_camera/RealSenseNodeFactory $(arg manager)" required="$(arg required)">
+            <param name="serial_no"                type="str"  value="$(arg serial_no)"/>
+            <param name="usb_port_id"              type="str"  value="$(arg usb_port_id)"/>
+            <param name="device_type"              type="str"  value="$(arg device_type)"/>
+            <param name="json_file_path"           type="str"  value="$(arg json_file_path)"/>
+            <param name="rosbag_filename"          type="str"  value="$(arg rosbag_filename)"/>
+
+            <param name="enable_pointcloud"        type="bool" value="$(arg enable_pointcloud)"/>
+            <param name="pointcloud_texture_stream" type="str" value="$(arg pointcloud_texture_stream)"/>
+            <param name="pointcloud_texture_index"  type="int" value="$(arg pointcloud_texture_index)"/>
+            <param name="enable_sync"              type="bool" value="$(arg enable_sync)"/>
+            <param name="align_depth"              type="bool" value="$(arg align_depth)"/>
+
+            <param name="fisheye_width"            type="int"  value="$(arg fisheye_width)"/>
+            <param name="fisheye_height"           type="int"  value="$(arg fisheye_height)"/>
+            <param name="enable_fisheye"           type="bool" value="$(arg enable_fisheye)"/>
+            <param name="enable_fisheye1"          type="bool" value="$(arg enable_fisheye1)"/>
+            <param name="enable_fisheye2"          type="bool" value="$(arg enable_fisheye2)"/>
+
+            <param name="depth_width"              type="int"  value="$(arg depth_width)"/>
+            <param name="depth_height"             type="int"  value="$(arg depth_height)"/>
+            <param name="enable_depth"             type="bool" value="$(arg enable_depth)"/>
+
+            <param name="color_width"              type="int"  value="$(arg color_width)"/>
+            <param name="color_height"             type="int"  value="$(arg color_height)"/>
+            <param name="enable_color"             type="bool" value="$(arg enable_color)"/>
+
+            <param name="infra_width"             type="int"  value="$(arg infra_width)"/>
+            <param name="infra_height"            type="int"  value="$(arg infra_height)"/>
+            <param name="enable_infra1"            type="bool" value="$(arg enable_infra1)"/>
+            <param name="enable_infra2"            type="bool" value="$(arg enable_infra2)"/>
+
+            <param name="fisheye_fps"              type="int"  value="$(arg fisheye_fps)"/>
+            <param name="depth_fps"                type="int"  value="$(arg depth_fps)"/>
+            <param name="infra_fps"               type="int"  value="$(arg infra_fps)"/>
+            <param name="color_fps"                type="int"  value="$(arg color_fps)"/>
+            <param name="gyro_fps"                 type="int"  value="$(arg gyro_fps)"/>
+            <param name="accel_fps"                type="int"  value="$(arg accel_fps)"/>
+            <param name="enable_gyro"              type="bool" value="$(arg enable_gyro)"/>
+            <param name="enable_accel"             type="bool" value="$(arg enable_accel)"/>
+
+            <param name="base_frame_id"            type="str"  value="$(arg base_frame_id)"/>
+            <param name="depth_frame_id"           type="str"  value="$(arg depth_frame_id)"/>
+            <param name="infra1_frame_id"          type="str"  value="$(arg infra1_frame_id)"/>
+            <param name="infra2_frame_id"          type="str"  value="$(arg infra2_frame_id)"/>
+            <param name="color_frame_id"           type="str"  value="$(arg color_frame_id)"/>
+            <param name="fisheye_frame_id"         type="str"  value="$(arg fisheye_frame_id)"/>
+            <param name="fisheye1_frame_id"        type="str"  value="$(arg fisheye1_frame_id)"/>
+            <param name="fisheye2_frame_id"        type="str"  value="$(arg fisheye2_frame_id)"/>
+            <param name="accel_frame_id"           type="str"  value="$(arg accel_frame_id)"/>
+            <param name="gyro_frame_id"            type="str"  value="$(arg gyro_frame_id)"/>
+            <param name="pose_frame_id"            type="str"  value="$(arg pose_frame_id)"/>
+
+            <param name="depth_optical_frame_id"    type="str"  value="$(arg depth_optical_frame_id)"/>
+            <param name="infra1_optical_frame_id"   type="str"  value="$(arg infra1_optical_frame_id)"/>
+            <param name="infra2_optical_frame_id"   type="str"  value="$(arg infra2_optical_frame_id)"/>
+            <param name="color_optical_frame_id"    type="str"  value="$(arg color_optical_frame_id)"/>
+            <param name="fisheye_optical_frame_id"  type="str"  value="$(arg fisheye_optical_frame_id)"/>
+            <param name="fisheye1_optical_frame_id" type="str"  value="$(arg fisheye1_optical_frame_id)"/>
+            <param name="fisheye2_optical_frame_id" type="str"  value="$(arg fisheye2_optical_frame_id)"/>
+            <param name="accel_optical_frame_id"    type="str"  value="$(arg accel_optical_frame_id)"/>
+            <param name="gyro_optical_frame_id"     type="str"  value="$(arg gyro_optical_frame_id)"/>
+            <param name="imu_optical_frame_id"      type="str"  value="$(arg imu_optical_frame_id)"/>
+            <param name="pose_optical_frame_id"     type="str"  value="$(arg pose_optical_frame_id)"/>
+
+            <param name="aligned_depth_to_color_frame_id"    type="str"  value="$(arg aligned_depth_to_color_frame_id)"/>
+            <param name="aligned_depth_to_infra1_frame_id"   type="str"  value="$(arg aligned_depth_to_infra1_frame_id)"/>
+            <param name="aligned_depth_to_infra2_frame_id"   type="str"  value="$(arg aligned_depth_to_infra2_frame_id)"/>
+            <param name="aligned_depth_to_fisheye_frame_id"  type="str"  value="$(arg aligned_depth_to_fisheye_frame_id)"/>
+            <param name="aligned_depth_to_fisheye1_frame_id" type="str"  value="$(arg aligned_depth_to_fisheye1_frame_id)"/>
+            <param name="aligned_depth_to_fisheye2_frame_id" type="str"  value="$(arg aligned_depth_to_fisheye2_frame_id)"/>
+
+            <param name="publish_tf"               type="bool"   value="$(arg publish_tf)"/>
+            <param name="tf_publish_rate"          type="double" value="$(arg tf_publish_rate)"/>
+
+            <param name="odom_frame_id"            type="str"  value="$(arg odom_frame_id)"/>
+            <param name="topic_odom_in"            type="str"  value="$(arg topic_odom_in)"/>
+            <param name="calib_odom_file"          type="str"    value="$(arg calib_odom_file)"/>
+            <param name="publish_odom_tf"          type="bool" value="$(arg publish_odom_tf)"/>
+            <param name="filters"                  type="str"    value="$(arg filters)"/>
+            <param name="clip_distance"            type="double" value="$(arg clip_distance)"/>
+            <param name="linear_accel_cov"         type="double" value="$(arg linear_accel_cov)"/>
+            <param name="initial_reset"            type="bool"   value="$(arg initial_reset)"/>
+            <param name="unite_imu_method"         type="str"    value="$(arg unite_imu_method)"/>
+            <param name="allow_no_texture_points"  type="bool"   value="$(arg allow_no_texture_points)"/>
+
+          </node>
+        </group>
+
+          <!-- dynamic reconfigure of camera(reduce number of pixels) -->
+          <node name="$(anon dynparam)" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters /d435i/decimation">
+            <param name="filter_magnitude" type="double" value="4" />
+          </node>
+
+
+</launch>
