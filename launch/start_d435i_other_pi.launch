@@ -17,7 +17,7 @@
     <arg name="respawn_mavros" default="false" />
     <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml"/>
     <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
-    <arg name="required" value="False" />
+    <arg name="required"        value="false" />
     <arg name="rosbag_filename"     default=""/>
     <arg name="enable_fisheye1"     default="true"/>
     <arg name="enable_fisheye2"     default="true"/>
