@@ -95,7 +95,7 @@
         <arg name="serial_no"           default="947122070852"/>
         <arg name="usb_port_id"         default=""/>
         <arg name="device_type"         default=""/>
-        <arg name="json_file_path"      default="$(find net_detection_and_control)/all_non_ros_things/einstellungen_camera/tmp_settings_depth.json"/>
+        <arg name="json_file_path"      default="/home/ubuntu/catkin_ws/src/net_detection_and_control/all_non_ros_things/einstellungen_camera/tmp_settings_depth.json"/>
         <arg name="camera"              default="d435i"/>
         <arg name="tf_prefix"           default="$(arg camera)"/>
         <arg name="external_manager"    default="false"/>
