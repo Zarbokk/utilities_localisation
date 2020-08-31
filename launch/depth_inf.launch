@@ -19,8 +19,8 @@
     <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
     <arg name="required" value="False" />
     <arg name="rosbag_filename"     default=""/>
-    <arg name="enable_fisheye1"     default="true"/>
-    <arg name="enable_fisheye2"     default="true"/>
+    <arg name="enable_fisheye1"     default="false"/>
+    <arg name="enable_fisheye2"     default="false"/>
 
 
     <!-- start localization gazebo-->
@@ -109,7 +109,7 @@
 
         <arg name="color_width"         default="640"/>
         <arg name="color_height"        default="480"/>
-        <arg name="enable_color"        default="true"/>
+        <arg name="enable_color"        default="false"/>
 
         <arg name="fisheye_fps"         default="15"/>
         <arg name="depth_fps"           default="15"/>
