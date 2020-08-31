@@ -79,11 +79,6 @@
             <param name="publish_tag_detections_image" type="bool" value="true" />
         </node>
 
-<!-- calc everything depth related -->
-        <node machine="tim-loc-pi" name="depth_rectification" pkg="net_detection_and_control" type="example" />
-        <node machine="tim-loc-pi" name="driving_along_sth" pkg="net_detection_and_control" type="driving_along_sth.py" />
-
-
     <arg name="required"        value="false" />
     <arg name="rosbag_filename"     default=""/>
     <arg name="enable_fisheye1"     default="false"/>
@@ -94,6 +89,7 @@
 
         <!-- calc everything depth related -->
         <node machine="tim-loc-pi" name="depth_rectification" pkg="net_detection_and_control" type="example" />
+        <node machine="tim-loc-pi" name="driving_along_sth" pkg="net_detection_and_control" type="driving_along_sth.py" />
 
         <arg name="serial_no"           default="947122070852"/>
         <arg name="usb_port_id"         default=""/>
