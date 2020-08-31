@@ -210,7 +210,7 @@
 
           <!-- dynamic reconfigure of camera(reduce number of pixels) -->
           <node machine="tim-loc-pi" name="$(anon dynparam)" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters /d435i/decimation">
-            <param name="filter_magnitude" type="double" value="4" />
+            <param name="filter_magnitude" type="double" value="5" />
           </node>
 
 
