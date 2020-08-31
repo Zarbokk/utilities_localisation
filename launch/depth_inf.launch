@@ -17,6 +17,7 @@
     <arg name="respawn_mavros" default="false" />
     <arg name="pluginlists_yaml" value="$(find mavros)/launch/px4_pluginlists.yaml"/>
     <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
+    <arg name="required" value="False" />
 
 
     <!-- start localization gazebo-->
