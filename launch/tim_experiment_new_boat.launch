@@ -57,7 +57,7 @@
 	    </node>
 
         <node machine="tim-loc-pi" name="localization_cam" pkg="usb_cam" type="usb_cam_node" output="screen" ns="$(arg ns)" >
-            <param name="video_device" value="/dev/video6" />
+            <param name="video_device" value="/dev/video0" />
             <param name="image_width" value="640" />
             <param name="image_height" value="480" />
             <param name="framerate" value="10" />
