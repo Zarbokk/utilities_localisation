@@ -79,7 +79,7 @@
             <param name="publish_tag_detections_image" type="bool" value="true" />
         </node>
 
-    <arg name="required"        value="true" />
+    <arg name="required"        value="false" />
     <arg name="rosbag_filename"     default=""/>
     <arg name="enable_fisheye1"     default="false"/>
     <arg name="enable_fisheye2"     default="false"/>
