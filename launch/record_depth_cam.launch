@@ -87,12 +87,6 @@
     <!-- start logging -->
     <machine name="tim-loc-pi" address="10.66.66.2" env-loader="~/setup.sh" user="ubuntu" password="hippocampus"/>
 
-
-        <node machine="tim-loc-pi" name="depth_rectification" pkg="net_detection_and_control" type="example" />
-        <!-- calc everything depth related
-        <node machine="tim-loc-pi" name="path_planning" pkg="net_detection_and_control" type="driving_along_sth.py" />-->
-        <node name="point_cloud_2_ekf" pkg="net_detection_and_control" type="point_cloud_2_ekf.py" />
-
         <arg name="serial_no"           default="947122070852"/>
         <arg name="usb_port_id"         default=""/>
         <arg name="device_type"         default=""/>
@@ -277,6 +271,8 @@
           <node machine="tim-loc-pi" name="$(anon dynparam)" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters /d435i/decimation">
             <param name="filter_magnitude" type="double" value="7" />
           </node>
-
+    <node pkg="rosbag" type="record" name="rosbag_record_diag"
+        args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /uuv00/pose_px4 /d435i/depth/color/points /tf /detection_net_plane /PointCloud2"
+    />
 
 </launch>
