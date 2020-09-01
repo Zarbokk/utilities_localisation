@@ -19,8 +19,8 @@
     <arg name="config_yaml" value="$(find mavros)/launch/px4_config.yaml" />
     <arg name="required"        value="false" />
     <arg name="rosbag_filename"     default=""/>
-    <arg name="enable_fisheye1"     default="true"/>
-    <arg name="enable_fisheye2"     default="true"/>
+    <arg name="enable_fisheye1"     default="false"/>
+    <arg name="enable_fisheye2"     default="false"/>
 
     <!-- start logging -->
     <machine name="tim-loc-pi" address="10.66.66.2" env-loader="~/setup.sh" user="ubuntu" password="hippocampus"/>
@@ -210,7 +210,7 @@
 
           <!-- dynamic reconfigure of camera(reduce number of pixels) -->
           <node machine="tim-loc-pi" name="$(anon dynparam)" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters /d435i/decimation">
-            <param name="filter_magnitude" type="double" value="5" />
+            <param name="filter_magnitude" type="double" value="6" />
           </node>
 
 
