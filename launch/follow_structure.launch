@@ -32,11 +32,11 @@
     <machine name="tim-loc-pi" address="10.66.66.2" env-loader="~/setup.sh" user="ubuntu" password="hippocampus"/>
         <!-- Start Mavros-->
     <!-- Mavros to ROS Remapping Koordinate System-->
-        <node machine="tim-loc-pi" pkg="hippocampus_common" type="tf_pose_ros_to_px4_node" name="tf_pose_ros_to_px4_node" output="screen" />
+        <node machine="tim-loc-pi" pkg="hippocampus_common" type="tf_pose_ros_to_px4_node" name="tf_pose_ros_to_px4_node" output="screen" ns="$(arg ns)" />
         <arg name="camera_pose_config" default="camera_pose_default.yaml" />
 
-        <node machine="tim-loc-pi" pkg="hippocampus_common" type="tf_publisher_node" name="tf_publisher_node" clear_params="true" output="screen">
-            <param name="calibration" type="str" value="gazebo" /> <!-- either gazebo or water_tank -->
+        <node machine="tim-loc-pi" pkg="hippocampus_common" type="tf_publisher_node" name="tf_publisher_node" clear_params="true" output="screen" ns="$(arg ns)">
+            <param name="calibration" type="str" value="water_tank" /> <!-- either gazebo or water_tank -->
             <rosparam command="load" file="$(find hippocampus_common)/config/$(arg camera_pose_config)" />
         </node>
           <!-- Start EKF Localization -->
