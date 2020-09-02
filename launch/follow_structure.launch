@@ -280,7 +280,7 @@
 
         <!-- rosbag -->
         <node pkg="rosbag" type="record" name="rosbag_record_diag"
-            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /uuv00/pose_px4 /uuv00/tag_detections_image /d435i/depth/color/points /output /tf /detection_net_plane /path_planning /PointCloud2"
+            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /uuv00/pose_px4 /uuv00/tag_detections_image /d435i/depth/color/points /tf /detection_net_plane /path_planning /PointCloud2"
         />
 
 </launch>
