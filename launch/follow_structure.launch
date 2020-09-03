@@ -24,7 +24,7 @@
 
 
     <!-- start localization gazebo-->
-      <!-- Apriltag algorithm -->
+    <!-- Apriltag algorithm -->
     <include file="$(find hippocampus_common)/launch/tf_publisher.launch" ns="$(arg ns)"></include>
     <include file="$(find hippocampus_common)/launch/tf_pose_ros_to_px4.launch" ns="$(arg ns)"></include>
 
