@@ -282,7 +282,7 @@
 
         <!-- rosbag -->
         <node pkg="rosbag" type="record" name="rosbag_record_diag"
-            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /output /uuv00/pose_px4 /uuv00/mavros/imu/data /uuv00/tag_detections_image /tf /point_cloud2 /detection_net_plane /path_planning"
+            args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /output /plane_to_drive_by /uuv00/pose_px4 /uuv00/mavros/imu/data /uuv00/tag_detections_image /tf /point_cloud2 /detection_net_plane /path_planning"
         />
 
 </launch>
