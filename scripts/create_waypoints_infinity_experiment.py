@@ -343,13 +343,7 @@ def change_parameter():
         distance_to_point = 0.8
         thrust = 0.4
         do_roll = False
-    if current_parameters == 10 or current_parameters == 11 or current_parameters == 12:
-        R = 0.4
-        wanted_z_position = 0.5
-        distance_to_point = 0.8
-        thrust = 0.5
-        do_roll = False
-    if current_parameters == 13:
+    if current_parameters == 10:
         R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
