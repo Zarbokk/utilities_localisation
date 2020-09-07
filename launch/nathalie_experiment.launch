@@ -42,9 +42,9 @@
         <param name="image_height" value="480" />
         <param name="framerate" value="10" />
         <param name="pixel_format" value="yuyv" />
-        <param name="sharpness" value="22"/>
+        <param name="sharpness" value="255"/>
         <param name="camera_frame_id" value="usb_cam" />
-        <param name="brightness" value="40"/>
+        <param name="brightness" value="32"/>
         <param name="io_method" value="mmap"/>
         <param name="contrast" value="32"/>
 
