@@ -75,7 +75,7 @@
     <!-- start logging -->
     <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
     <node machine="meas-pi" pkg="rosbag" type="record" name="rosbag_record_diag"
-        args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /uuv00/tag_detections_image /tf /uuv00/tag_detections /uuv00/estimated_pose /uuv00/pose_px4 /uuv00/mavros/imu/data /mavros/rc/out"
+        args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /uuv00/tag_detections_image /tf /uuv00/tag_detections /uuv00/estimated_pose /uuv00/pose_px4 /uuv00/mavros/imu/data /uuv00/mavros/local_position/velocity_local /uuv00/mavros/local_position/velocity_body /mavros/rc/out"
     />
 
 </launch>
