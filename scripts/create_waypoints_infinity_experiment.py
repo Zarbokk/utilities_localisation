@@ -313,17 +313,17 @@ def callback(msg):
             start_timer = True
             timer = time.time()
 
-        if abs(timer - time.time()) > 2.0 and start_timer == True:
+        if abs(timer - time.time()) > 2.0 and start_timer:
             thrust = 0
 
     # yaw_des = 0.0 / 180.0 * np.pi
     # pitch_des = 0.0 / 180.0 * np.pi
 
-    if current_parameters == 2 and start_timer2 == False:
+    if current_parameters == 2 and not start_timer2:
         start_timer2 = True
         timer2 = time.time()
 
-    if abs(timer2 - time.time()) > 3.0 and start_timer2 == True:
+    if abs(timer2 - time.time()) > 3.0 and start_timer2:
         thrust = 0
 
     qz_90n = Quaternion(
@@ -340,10 +340,10 @@ def callback(msg):
     # 0.2 works
     send_waypoint.thrust = thrust * np.cos(yaw_current - yaw_des) * np.cos(
         pitch_current - pitch_des)
-    if abs(yaw_current - yaw_des) > np.pi / 2 or abs(
-            pitch_current - pitch_des) > np.pi / 2:
-        if not start_timer:
-            send_waypoint.thrust = 0.0
+    # if abs(yaw_current - yaw_des) > np.pi / 2 or abs(
+    #        pitch_current - pitch_des) > np.pi / 2:
+    #    if not start_timer:
+    #        send_waypoint.thrust = 0.0
     publisher_waypoint.publish(send_waypoint)
     rate.sleep()
 
