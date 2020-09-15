@@ -241,7 +241,7 @@ def callback(msg):
     """"""
     global current_pos_number, N, R, p, rate, thrust, carrot, just_changed, do_roll
     current_pos = p[1:4, current_pos_number]
-    # look if next waypoint should be loaded
+    # look if  next waypoint should be loaded
     send_waypoint = AttitudeTarget()
 
 

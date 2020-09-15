@@ -35,7 +35,7 @@
         <param name="cam_reserved" type="bool" value="true" />
     </node>
 
-      <!-- start waypoints-->
+      <!-- start waypoints -->
     <node pkg="utilities_localisation" type="create_waypoints_inf_reversed.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>
 
     <!-- start logging -->
