@@ -92,7 +92,9 @@ p = create_inf()
 do_roll = False
 just_changed = False
 start_timer = False
+start_timer2 = False
 timer = 0.0
+timer2 = 0.0
 
 def rotation_matrix(angle):
     return np.asarray([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])
@@ -241,7 +243,7 @@ def visualization():
 
 def callback(msg):
     """"""
-    global current_pos_number, N, R, p, rate, thrust, carrot, just_changed, do_roll, current_parameters, start_timer, timer
+    global current_pos_number, N, R, p, rate, thrust, carrot, just_changed, do_roll, current_parameters, start_timer, timer, start_timer2, timer2
     current_pos = p[1:4, current_pos_number]
     # look if next waypoint should be loaded
     send_waypoint = AttitudeTarget()
@@ -317,11 +319,11 @@ def callback(msg):
     # yaw_des = 0.0 / 180.0 * np.pi
     # pitch_des = 0.0 / 180.0 * np.pi
 
-    if current_parameters == 2 and start_timer == False:
-        start_timer = True
-        timer = time.time()
+    if current_parameters == 2 and start_timer2 == False:
+        start_timer2 = True
+        timer2 = time.time()
 
-    if abs(timer - time.time()) > 3.0 and start_timer == True:
+    if abs(timer2 - time.time()) > 3.0 and start_timer2 == True:
         thrust = 0
 
     qz_90n = Quaternion(
@@ -340,7 +342,8 @@ def callback(msg):
         pitch_current - pitch_des)
     if abs(yaw_current - yaw_des) > np.pi / 2 or abs(
             pitch_current - pitch_des) > np.pi / 2:
-        send_waypoint.thrust = 0.0
+        if not start_timer:
+            send_waypoint.thrust = 0.0
     publisher_waypoint.publish(send_waypoint)
     rate.sleep()
 
