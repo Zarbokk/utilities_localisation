@@ -268,9 +268,9 @@ def callback(msg):
 
     yaw_current, pitch_current, roll_current = rotation_body_frame.yaw_pitch_roll
     roll_current=-roll_current
-    #yaw_current = -yaw_current
-    #pitch_current = -pitch_current
-    #roll_current = -((roll_current + 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi)
+    # yaw_current = -yaw_current
+    # pitch_current = -pitch_current
+    # roll_current = -((roll_current + 360 / 180.0 * np.pi) % (np.pi * 2) - 180 / 180.0 * np.pi)
     yaw_des = np.arctan2((current_waypoint[1] - msg.pose.position.y), (current_waypoint[0] - msg.pose.position.x))
     pitch_des = -np.arctan((wanted_z_position - msg.pose.position.z) / distance_to_point)
     roll_des = 0.0 / 180.0 * np.pi
