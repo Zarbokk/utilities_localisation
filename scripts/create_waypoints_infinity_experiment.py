@@ -304,14 +304,14 @@ def callback(msg):
         send_waypoint.thrust = thrust*1.5
         """
         pitch_des = np.pi / 2 - 0.2
-        yaw_des = 0
+        yaw_des = np.pi * 1.25
         roll_des = 0
         thrust = 1.0
         if not start_timer:
             start_timer = True
             timer = time.time()
 
-        if abs(timer - time.time()) > 3.0 and start_timer == True:
+        if abs(timer - time.time()) > 2.0 and start_timer == True:
             thrust = 0
 
     # yaw_des = 0.0 / 180.0 * np.pi
@@ -350,14 +350,14 @@ def change_parameter():
     current_parameters = current_parameters + 1
     if current_parameters == 1: # or current_parameters == 2 or current_parameters == 3 or current_parameters == 4 or current_parameters == 5 or current_parameters == 6 or current_parameters == 7:
         R = 0.4
-        wanted_z_position = 0.7
+        wanted_z_position = 0.6
         distance_to_point = 0.8
         thrust = 0.055
         do_roll = True
 
     if current_parameters == 2:
         R = 0.4
-        wanted_z_position = 0.7
+        wanted_z_position = 0.6
         distance_to_point = 0.8
         thrust = 0.1
         auftauchen = True
