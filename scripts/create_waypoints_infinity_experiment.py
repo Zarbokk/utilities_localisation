@@ -8,6 +8,7 @@ import rospy
 from geometry_msgs.msg import Pose, PoseArray, PoseStamped
 from visualization_msgs.msg import Marker, MarkerArray
 from mavros_msgs.msg import PositionTarget, AttitudeTarget
+import time
 # from numpy import genfromtxt
 # import os
 # import matplotlib.pyplot as plt
@@ -90,7 +91,8 @@ roll_desired = 0
 p = create_inf()
 do_roll = False
 just_changed = False
-
+start_timer = False
+timer = 0.0
 
 def rotation_matrix(angle):
     return np.asarray([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]])
@@ -239,7 +241,7 @@ def visualization():
 
 def callback(msg):
     """"""
-    global current_pos_number, N, R, p, rate, thrust, carrot, just_changed, do_roll
+    global current_pos_number, N, R, p, rate, thrust, carrot, just_changed, do_roll, current_parameters, start_timer, timer
     current_pos = p[1:4, current_pos_number]
     # look if next waypoint should be loaded
     send_waypoint = AttitudeTarget()
@@ -300,6 +302,13 @@ def callback(msg):
         send_waypoint.thrust = thrust*1.5
     # yaw_des = 0.0 / 180.0 * np.pi
     # pitch_des = 0.0 / 180.0 * np.pi
+
+    if current_parameters == 2 and start_timer == False:
+        start_timer = True
+        timer = time.time()
+
+    if abs(timer - time.time()) > 3.0 and start_timer == False:
+        thrust = 0
 
     qz_90n = Quaternion(
         axis=[0, 0, 1], angle=-(yaw_des - np.pi / 2)) * Quaternion(axis=[0, 1, 0], angle=-pitch_des) * Quaternion(
