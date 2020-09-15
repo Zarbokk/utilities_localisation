@@ -296,7 +296,7 @@ def callback(msg):
         if roll_des > -np.pi / 3 and roll_des < 0:
             roll_des = 0
             do_roll = False
-        send_waypoint.thrust = thrust*0.1
+        send_waypoint.thrust = thrust*1.5
     # yaw_des = 0.0 / 180.0 * np.pi
     # pitch_des = 0.0 / 180.0 * np.pi
 
@@ -312,9 +312,9 @@ def callback(msg):
     send_waypoint.orientation.w = qz_90n.w
     # print(qz_90n.x,qz_90n.y,qz_90n.z,qz_90n.w)
     # 0.2 works
-    send_waypoint.thrust = thrust * np.cos(yaw_current - yaw_des) * np.cos(roll_current - roll_des) * np.cos(
+    send_waypoint.thrust = thrust * np.cos(yaw_current - yaw_des) *  np.cos(
         pitch_current - pitch_des)
-    if abs(yaw_current - yaw_des) > np.pi / 2 or abs(roll_current - roll_des) > np.pi / 2 or abs(
+    if abs(yaw_current - yaw_des) > np.pi / 2 or abs(
             pitch_current - pitch_des) > np.pi / 2:
         send_waypoint.thrust = 0.0
     publisher_waypoint.publish(send_waypoint)
@@ -326,11 +326,11 @@ def change_parameter():
     current_parameters = current_parameters + 1
     if current_parameters == 1 or current_parameters == 2 or current_parameters == 3:
         R = 0.4
-        wanted_z_position = 0.8
+        wanted_z_position = 0.5
         distance_to_point = 0.8
         thrust = 0.05
-        do_roll = False
-    if current_parameters == 7 or current_parameters == 8 or current_parameters == 9:
+        do_roll = True
+    if current_parameters == 4 or current_parameters == 5 or current_parameters == 6:
         R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
@@ -342,11 +342,11 @@ def change_parameter():
         distance_to_point = 0.8
         thrust = 0.4
         do_roll = False
-    if current_parameters == 2:
+    if current_parameters == 7:
         R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 1.0
+        thrust = 0.1
         auftauchen = True
         do_roll = False
     return
