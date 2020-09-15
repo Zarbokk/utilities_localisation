@@ -326,7 +326,7 @@ def change_parameter():
     current_parameters = current_parameters + 1
     if current_parameters == 1 or current_parameters == 2 or current_parameters == 3:
         R = 0.4
-        wanted_z_position = 0.5
+        wanted_z_position = 0.8
         distance_to_point = 0.8
         thrust = 0.05
         do_roll = False
@@ -346,7 +346,7 @@ def change_parameter():
         R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.10
+        thrust = 0.2
         auftauchen = True
         do_roll = False
     return
