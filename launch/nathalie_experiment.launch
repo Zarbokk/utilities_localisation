@@ -42,9 +42,9 @@
         <param name="image_height" value="480" />
         <param name="framerate" value="10" />
         <param name="pixel_format" value="yuyv" />
-        <param name="sharpness" value="22"/>
+        <param name="sharpness" value="255"/>
         <param name="camera_frame_id" value="usb_cam" />
-        <param name="brightness" value="40"/>
+        <param name="brightness" value="32"/>
         <param name="io_method" value="mmap"/>
         <param name="contrast" value="32"/>
 
@@ -70,12 +70,12 @@
       </node>
 
       <!-- start waypoints-->
-        <!-- <node pkg="utilities_localisation" type="circle_driving_malte.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>-->
+        <node pkg="utilities_localisation" type="create_waypoints_infinity_experiment.py" name="drive_waypoints" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" ns="$(arg ns)" ></node>
 
     <!-- start logging -->
     <machine name="meas-pi" address="169.254.155.26" env-loader="~/catkin_ws/devel/env.sh" user="pi" password="raspberry"/>
     <node machine="meas-pi" pkg="rosbag" type="record" name="rosbag_record_diag"
-        args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /uuv00/tag_detections_image /uuv00/tag_detections /uuv00/estimated_pose /uuv00/pose_px4 /uuv00/mavros/imu/data /uuv00/mavros/rc/out /uuv00/mavros/local_position/velocity_body"
+        args="record -o $(find utilities_localisation)/scripts/rosbag_experiments/recording_experiment /tf /uuv00/tag_detections /uuv00/estimated_pose /uuv00/pose_px4 /uuv00/mavros/imu/data /uuv00/mavros/local_position/velocity_local /uuv00/mavros/local_position/velocity_body /uuv00/mavros/rc/out"
     />
 
 </launch>
