@@ -346,7 +346,7 @@ def change_parameter():
         R = 0.4
         wanted_z_position = 0.5
         distance_to_point = 0.8
-        thrust = 0.2
+        thrust = 0.5
         auftauchen = True
         do_roll = False
     return
