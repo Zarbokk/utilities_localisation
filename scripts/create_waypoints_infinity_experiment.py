@@ -307,7 +307,7 @@ def callback(msg):
         start_timer = True
         timer = time.time()
 
-    if abs(timer - time.time()) > 3.0 and start_timer == False:
+    if abs(timer - time.time()) > 3.0 and start_timer == True:
         thrust = 0
 
     qz_90n = Quaternion(
