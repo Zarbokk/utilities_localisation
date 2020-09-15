@@ -287,7 +287,7 @@ def callback(msg):
             pitch_current - pitch_des) > np.pi / 2:
         send_waypoint.thrust = 0
 
-    if do_roll and current_pos_number > 90 and current_pos_number < 99:
+    if do_roll and current_pos_number > 82 and current_pos_number < 99:
 
         current_pos_number = 98
         roll_des = roll_current + np.pi / 2
