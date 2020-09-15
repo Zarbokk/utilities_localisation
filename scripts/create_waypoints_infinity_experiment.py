@@ -296,7 +296,7 @@ def callback(msg):
         if roll_des > -np.pi / 3 and roll_des < 0:
             roll_des = 0
             do_roll = False
-        send_waypoint.thrust = thrust*0.8
+        send_waypoint.thrust = thrust*1.5
     # yaw_des = 0.0 / 180.0 * np.pi
     # pitch_des = 0.0 / 180.0 * np.pi
 
