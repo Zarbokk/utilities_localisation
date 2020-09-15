@@ -312,9 +312,9 @@ def callback(msg):
     send_waypoint.orientation.w = qz_90n.w
     # print(qz_90n.x,qz_90n.y,qz_90n.z,qz_90n.w)
     # 0.2 works
-    send_waypoint.thrust = thrust * np.cos(yaw_current - yaw_des) * np.cos(roll_current - roll_des) * np.cos(
+    send_waypoint.thrust = thrust * np.cos(yaw_current - yaw_des) * np.cos(
         pitch_current - pitch_des)
-    if abs(yaw_current - yaw_des) > np.pi / 2 or abs(roll_current - roll_des) > np.pi / 2 or abs(
+    if abs(yaw_current - yaw_des) > np.pi / 2  or abs(
             pitch_current - pitch_des) > np.pi / 2:
         send_waypoint.thrust = 0.0
     publisher_waypoint.publish(send_waypoint)
