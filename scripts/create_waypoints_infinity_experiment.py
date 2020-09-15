@@ -292,6 +292,8 @@ def callback(msg):
 
     if do_roll and current_pos_number > 82 and current_pos_number < 99:
 
+        # quick tim hack, do jump instead
+        """
         current_pos_number = 98
         roll_des = roll_current + np.pi / 2
         if roll_des > np.pi:
@@ -300,6 +302,18 @@ def callback(msg):
             roll_des = 0
             do_roll = False
         send_waypoint.thrust = thrust*1.5
+        """
+        pitch_des = np.pi / 2 - 0.2
+        yaw_des = 0
+        roll_des = 0
+        thrust = 1.0
+        if not start_timer:
+            start_timer = True
+            timer = time.time()
+
+        if abs(timer - time.time()) > 3.0 and start_timer == True:
+            thrust = 0
+
     # yaw_des = 0.0 / 180.0 * np.pi
     # pitch_des = 0.0 / 180.0 * np.pi
 
@@ -324,7 +338,7 @@ def callback(msg):
     # 0.2 works
     send_waypoint.thrust = thrust * np.cos(yaw_current - yaw_des) * np.cos(
         pitch_current - pitch_des)
-    if abs(yaw_current - yaw_des) > np.pi / 2  or abs(
+    if abs(yaw_current - yaw_des) > np.pi / 2 or abs(
             pitch_current - pitch_des) > np.pi / 2:
         send_waypoint.thrust = 0.0
     publisher_waypoint.publish(send_waypoint)
@@ -339,13 +353,13 @@ def change_parameter():
         wanted_z_position = 0.7
         distance_to_point = 0.8
         thrust = 0.055
-        do_roll = False
+        do_roll = True
 
     if current_parameters == 2:
         R = 0.4
         wanted_z_position = 0.7
         distance_to_point = 0.8
-        thrust = 1.0
+        thrust = 0.1
         auftauchen = True
         do_roll = False
     return
