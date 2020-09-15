@@ -277,7 +277,7 @@ def callback(msg):
 
 
     if auftauchen:
-        pitch_des = np.pi / 2 - 0.1
+        pitch_des = np.pi / 2 - 0.3
         yaw_des = 0
         roll_des = 0
 
