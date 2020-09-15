@@ -57,16 +57,16 @@
 	    </node>
 
         <node machine="tim-loc-pi" name="localization_cam" pkg="usb_cam" type="usb_cam_node" output="screen" ns="$(arg ns)" >
-            <param name="video_device" value="/dev/video0" />
-            <param name="image_width" value="640" />
-            <param name="image_height" value="480" />
-            <param name="framerate" value="10" />
-            <param name="pixel_format" value="yuyv" />
-            <param name="sharpness" value="22"/>
-            <param name="camera_frame_id" value="usb_cam" />
-            <param name="brightness" value="40"/>
-            <param name="io_method" value="mmap"/>
-            <param name="contrast" value="32"/>
+        <param name="video_device" value="/dev/video0" />
+        <param name="image_width" value="640" />
+        <param name="image_height" value="480" />
+        <param name="framerate" value="10" />
+        <param name="pixel_format" value="yuyv" />
+        <param name="sharpness" value="255"/>
+        <param name="camera_frame_id" value="usb_cam" />
+        <param name="brightness" value="32"/>
+        <param name="io_method" value="mmap"/>
+        <param name="contrast" value="32"/>
         </node>
 
         <node  machine="tim-loc-pi" name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg ns)">
