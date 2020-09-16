@@ -305,15 +305,15 @@ def callback(msg):
             do_roll = False
         send_waypoint.thrust = thrust*1.5
         """
-        pitch_des = np.pi / 2 - 0.2
-        yaw_des = np.pi * 1.25
+        pitch_des = np.pi / 2 - 0.2  # 78 deg
+        yaw_des = 0 # np.pi * 1.25
         roll_des = 0
         thrust = 1.0
         if not start_timer:
             start_timer = True
             timer = time.time()
 
-        if abs(timer - time.time()) > 2.0 and start_timer:
+        if abs(timer - time.time()) > 2.5 and start_timer:
             thrust = 0
 
     # yaw_des = 0.0 / 180.0 * np.pi
