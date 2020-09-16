@@ -305,7 +305,7 @@ def callback(msg):
             do_roll = False
         send_waypoint.thrust = thrust*1.5
         """
-        pitch_des = np.pi / 2 - 0.35  # ca 70 deg
+        pitch_des = np.pi / 2 - 0.2  # ca 78 deg
         yaw_des = 0  # np.pi * 1.25
         roll_des = 0
         thrust = 1.0
